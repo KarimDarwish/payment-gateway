@@ -1,0 +1,13 @@
+name: Docker Build
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Docker Build
+        run: docker build . -t payment-gateway:${{ github.run_id }}
