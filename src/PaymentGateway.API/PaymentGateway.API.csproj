@@ -9,5 +9,9 @@
     <ItemGroup>
         <InternalsVisibleTo Include="API.IntegrationTests" />
     </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.1" />
+    </ItemGroup>
     
 </Project>
