@@ -13,7 +13,7 @@ jobs:
         run: dotnet tool restore
 
       - name: Build
-        run: dotnet build --configuration Release
+        run: dotnet build --configuration Debug
 
       - name: Generate Swagger UI
         uses: Legion2/swagger-ui-action@v1
