@@ -1,0 +1,30 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Payment Gateway",
+    "description": "A payment gateway that allows merchants to offer their shoppers a secure way to pay for their products",
+    "version": "v1"
+  },
+  "paths": {
+    "/": {
+      "get": {
+        "tags": [
+          "PaymentGateway.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": { }
+}
