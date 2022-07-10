@@ -1,5 +1,7 @@
 name: Build and Test
 on:
+  push:
+    branches: [ main ]
   pull_request:
     branches: [ main ]
 
@@ -13,6 +15,6 @@ jobs:
       - name: Restore
         run: dotnet restore
       - name: Build
-        run: dotnet build --configuration Release --no-restore 
+        run: dotnet build --configuration Release --no-restore
       - name: Test
         run: dotnet test --configuration Release --no-build 
