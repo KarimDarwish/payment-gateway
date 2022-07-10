@@ -1,4 +1,5 @@
 using PaymentGateway.API.Configuration;
+using Prometheus;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
@@ -8,8 +9,11 @@ builder.Services.AddHealthChecks();
 
 var app = builder.Build();
 
+app.UseMetricServer();
+
 app.MapGet("/", () => "Hello World!");
 app.MapHealthChecks("/health");
+app.UseHttpMetrics();
 
 if (app.Environment.IsDevelopment())
 {
