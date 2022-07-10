@@ -13,5 +13,9 @@
     <ItemGroup>
       <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.1" />
     </ItemGroup>
-    
+
+    <Target Name="SwaggerToFile" AfterTargets="AfterBuild">
+        <Exec Command="dotnet swagger tofile --output ../../swagger.json &quot;$(TargetPath)&quot; v1" />
+    </Target>
+
 </Project>

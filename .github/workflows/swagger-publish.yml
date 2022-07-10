@@ -1,0 +1,27 @@
+﻿name: Publish Swagger
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Restore Tools
+        run: dotnet tool restore
+
+      - name: Build
+        run: dotnet build /src/PaymentGateway.API/PaymentGateway.API.csproj --configuration Release
+
+      - name: Generate Swagger UI
+        uses: Legion2/swagger-ui-action@v1
+        with:
+          output: swagger-ui
+          spec-file: swagger.json
+
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: swagger-ui
