@@ -57,4 +57,22 @@ public class CreditCardTests
         creditCard.Should().NotBeNull();
         creditCard.CardNumber.Should().Be(cardNumber);
     }
+
+    [Fact]
+    public void Create_withWhiteSpacesAtStartAndEnd_trimsCardNumber()
+    {
+        //Arrange
+        const string givenCardNumber = " 123 456 789 1234567 ";
+        const string expectedCardNumber = "123 456 789 1234567";
+
+        var expired = new CardExpiry(12, 29);
+        var cvv = new CardVerificationValue(123);
+
+        //Act
+        var creditCard = new CreditCard(givenCardNumber, expired, cvv);
+
+        //Assert
+        creditCard.Should().NotBeNull();
+        creditCard.CardNumber.Should().Be(expectedCardNumber);
+    }
 }
