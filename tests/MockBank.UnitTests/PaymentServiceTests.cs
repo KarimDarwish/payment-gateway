@@ -25,6 +25,10 @@ public class PaymentServiceTests
         var paymentRequest =
             new BankPaymentRequest(9.90m, "USD", new BankCreditCard("123 123 123 123 1234", 12, 29, 1234));
 
+        _mockRandomNumberGenerator
+            .Setup(service => service.GenerateRandomNumber(It.IsAny<int>(), It.IsAny<int>()))
+            .Returns(1);
+
         //Act
         var response = _service.ProcessPayment(paymentRequest);
 
