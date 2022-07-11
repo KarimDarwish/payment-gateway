@@ -5,7 +5,7 @@ using PaymentGateway.MockBank.Model;
 
 namespace PaymentGateway.API.Mappers;
 
-public class Mapper
+public static class Mapper
 {
     public static CreditCard ToCreditCard(CreditCardDto dto)
     {

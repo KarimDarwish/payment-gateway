@@ -22,8 +22,9 @@ public class ProcessPaymentCommandHandler : IRequestHandler<ProcessPaymentComman
         _repository = repository;
         _paymentService = paymentService;
 
-        _bankRetryPolicy = Policy.Handle<BankRateLimitException>()
-            .WaitAndRetry(retryCount: 5, sleepDurationProvider: _ => TimeSpan.FromMilliseconds(50));
+        _bankRetryPolicy = Policy
+            .Handle<BankRateLimitException>()
+            .WaitAndRetry(5, _ => TimeSpan.FromMilliseconds(50));
     }
 
     public async Task<ProcessPaymentResult> Handle(ProcessPaymentCommand request, CancellationToken cancellationToken)
