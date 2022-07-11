@@ -7,7 +7,7 @@ namespace PaymentGateway.API.Mappers;
 
 public static class Mapper
 {
-    public static CreditCard ToCreditCard(CreditCardDto dto)
+    public static CreditCard ToCreditCard(CreditCardWriteDto dto)
     {
         var expiry = new CardExpiry(dto.ExpiryMonth, dto.ExpiryTwoDigitYear);
         var cvv = new CardVerificationValue(dto.Cvv);
@@ -15,11 +15,10 @@ public static class Mapper
         return new CreditCard(dto.CardNumber, expiry, cvv);
     }
 
-    public static CreditCardDto ToCreditCardDto(CreditCard creditCard)
+    public static CreditCardReadDto ToCreditCardReadDto(CreditCard creditCard)
     {
-        return new CreditCardDto
+        return new CreditCardReadDto
         {
-            Cvv = creditCard.Cvv.Value,
             CardNumber = creditCard.CardNumber,
             ExpiryMonth = creditCard.ExpiryDate.Month,
             ExpiryTwoDigitYear = creditCard.ExpiryDate.Year
