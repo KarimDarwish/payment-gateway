@@ -10,4 +10,9 @@ public static class HttpResponseMessageExtensions
     {
         return JsonConvert.DeserializeObject<T>(await message.Content.ReadAsStringAsync());
     }
+
+    public static async Task<T> Deserialize<T>(this Task<HttpResponseMessage> message)
+    {
+        return JsonConvert.DeserializeObject<T>(await (await message).Content.ReadAsStringAsync());
+    }
 }
