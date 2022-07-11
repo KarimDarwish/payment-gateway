@@ -1,6 +1,8 @@
-﻿namespace PaymentGateway.API.Models;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace PaymentGateway.API.Models;
 
 public class PaymentProcessedResponse
 {
-    public Guid PaymentId { get; set; }
+    [Required] public Guid PaymentId { get; set; }
 }

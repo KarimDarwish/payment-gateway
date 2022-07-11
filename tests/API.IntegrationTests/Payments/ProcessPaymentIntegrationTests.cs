@@ -3,8 +3,10 @@ using System.Threading.Tasks;
 using API.IntegrationTests.Configuration;
 using API.IntegrationTests.Extensions;
 using FluentAssertions;
+using Microsoft.Extensions.DependencyInjection;
 using PaymentGateway.API.Commands.ProcessPayment;
 using PaymentGateway.API.Models;
+using PaymentGateway.Domain.Repositories;
 using Xunit;
 
 namespace API.IntegrationTests.Payments;
@@ -40,5 +42,8 @@ public class ProcessPaymentIntegrationTests : IntegrationTest
 
         var response = await responseMessage.Deserialize<PaymentProcessedResponse>();
         response.PaymentId.Should().NotBeEmpty();
+
+        var repository = Factory.Services.GetRequiredService<IPaymentRepository>();
+        repository.Get(response.PaymentId).Should().NotBeNull();
     }
 }

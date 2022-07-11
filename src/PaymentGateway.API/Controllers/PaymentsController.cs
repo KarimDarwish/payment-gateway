@@ -26,12 +26,12 @@ public class PaymentsController : ControllerBase
     /// <response code="201">Returns the newly created payment including its ID</response>
     [HttpPost(Name = nameof(ProcessNewPayment))]
     [Consumes("application/json")]
-    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(PaymentProcessedResponse), StatusCodes.Status201Created)]
     public async Task<ActionResult> ProcessNewPayment([FromBody] ProcessPaymentCommand command)
     {
-        await _mediator.Send(command);
+        var result = await _mediator.Send(command);
 
-        var response = new PaymentProcessedResponse {PaymentId = Guid.NewGuid()};
+        var response = new PaymentProcessedResponse {PaymentId = result.PaymentId};
 
         return CreatedAtAction(nameof(GetPayment), new {id = response.PaymentId}, response);
     }
