@@ -36,7 +36,7 @@ public class GetPaymentIntegrationTests : IntegrationTest
         paymentResponse.Amount.Should().Be(command.Amount);
         paymentResponse.Currency.Should().Be(command.Currency);
         paymentResponse.CreditCard.Should().NotBeNull();
-        paymentResponse.Status.Should().Be(PaymentStatus.Processing.ToString());
+        paymentResponse.Status.Should().Be(PaymentStatus.Completed.ToString());
     }
 
     [Fact]

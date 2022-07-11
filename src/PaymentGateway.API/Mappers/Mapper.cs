@@ -1,6 +1,7 @@
 ﻿using PaymentGateway.API.Models;
 using PaymentGateway.Domain.Entities;
 using PaymentGateway.Domain.ValueObjects;
+using PaymentGateway.MockBank.Model;
 
 namespace PaymentGateway.API.Mappers;
 
@@ -28,5 +29,17 @@ public class Mapper
     public static Currency ToCurrency(string currency)
     {
         return Currencies.FromString(currency);
+    }
+
+    public static BankPaymentRequest ToBankPaymentRequest(Payment payment)
+    {
+        return new BankPaymentRequest(payment.Amount.Amount, payment.Amount.Currency.ToString(),
+            ToBankCreditCard(payment.CreditCard));
+    }
+
+    private static BankCreditCard ToBankCreditCard(CreditCard creditCard)
+    {
+        return new BankCreditCard(creditCard.CardNumber, creditCard.ExpiryDate.Month, creditCard.ExpiryDate.Year,
+            creditCard.Cvv.Value);
     }
 }
