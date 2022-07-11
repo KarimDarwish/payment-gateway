@@ -6,7 +6,7 @@ namespace API.IntegrationTests.Configuration;
 
 public abstract class IntegrationTest : IClassFixture<WebApplicationFactoryFixture>
 {
-    private WebApplicationFactory<Program> Factory { get; }
+    internal WebApplicationFactory<Program> Factory { get; }
     internal HttpClient Client { get; }
 
     protected IntegrationTest(WebApplicationFactoryFixture fixture)

@@ -1,6 +1,3 @@
 ﻿namespace PaymentGateway.API.Commands.ProcessPayment;
 
-public class ProcessPaymentResult
-{
-    
-}
+public record ProcessPaymentResult(Guid PaymentId);
