@@ -14,6 +14,17 @@ public class Mapper
         return new CreditCard(dto.CardNumber, expiry, cvv);
     }
 
+    public static CreditCardDto ToCreditCardDto(CreditCard creditCard)
+    {
+        return new CreditCardDto
+        {
+            Cvv = creditCard.Cvv.Value,
+            CardNumber = creditCard.CardNumber,
+            ExpiryMonth = creditCard.ExpiryDate.Month,
+            ExpiryTwoDigitYear = creditCard.ExpiryDate.Year
+        };
+    }
+
     public static Currency ToCurrency(string currency)
     {
         return Currencies.FromString(currency);

@@ -12,6 +12,11 @@ public class Currency
         Name = name;
         IsoCode = isoCode;
     }
+
+    public override string ToString()
+    {
+        return IsoCode;
+    }
 }
 
 public static class Currencies
