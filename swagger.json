@@ -107,13 +107,17 @@
       },
       "PaymentProcessedResponse": {
         "required": [
-          "paymentId"
+          "paymentId",
+          "status"
         ],
         "type": "object",
         "properties": {
           "paymentId": {
             "type": "string",
             "format": "uuid"
+          },
+          "status": {
+            "type": "string"
           }
         },
         "additionalProperties": false
