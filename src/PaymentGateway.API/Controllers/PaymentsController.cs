@@ -1,7 +1,8 @@
-﻿using System.Net;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using PaymentGateway.API.Commands.ProcessPayment;
+using PaymentGateway.API.Models;
 
 namespace PaymentGateway.API.Controllers;
 
@@ -10,6 +11,13 @@ namespace PaymentGateway.API.Controllers;
 [Produces("application/json")]
 public class PaymentsController : ControllerBase
 {
+    private readonly IMediator _mediator;
+
+    public PaymentsController(IMediator mediator)
+    {
+        _mediator = mediator;
+    }
+
     /// <summary>
     /// Processes a new payment from a shopper
     /// </summary>
@@ -19,9 +27,13 @@ public class PaymentsController : ControllerBase
     [HttpPost(Name = nameof(ProcessNewPayment))]
     [Consumes("application/json")]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    public ActionResult ProcessNewPayment([FromBody] ProcessPaymentCommand command)
+    public async Task<ActionResult> ProcessNewPayment([FromBody] ProcessPaymentCommand command)
     {
-        return new StatusCodeResult((int) HttpStatusCode.Created);
+        await _mediator.Send(command);
+
+        var response = new PaymentProcessedResponse {PaymentId = Guid.NewGuid()};
+
+        return CreatedAtAction(nameof(GetPayment), new {id = response.PaymentId}, response);
     }
 
     /// <summary>
