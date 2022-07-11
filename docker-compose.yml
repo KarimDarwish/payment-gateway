@@ -1,0 +1,7 @@
+﻿version: "3.9"
+
+services:
+  payment-gateway:
+    build: .
+    ports:
+      - "5555:8080"
