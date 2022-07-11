@@ -98,7 +98,33 @@
   },
   "components": {
     "schemas": {
-      "CreditCard": {
+      "CreditCardReadModel": {
+        "required": [
+          "cardNumber",
+          "expiryMonth",
+          "expiryTwoDigitYear"
+        ],
+        "type": "object",
+        "properties": {
+          "cardNumber": {
+            "type": "string"
+          },
+          "expiryMonth": {
+            "maximum": 12,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32"
+          },
+          "expiryTwoDigitYear": {
+            "maximum": 99,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreditCardWriteModel": {
         "required": [
           "cardNumber",
           "cvv",
@@ -154,7 +180,7 @@
             "type": "string"
           },
           "creditCard": {
-            "$ref": "#/components/schemas/CreditCard"
+            "$ref": "#/components/schemas/CreditCardReadModel"
           }
         },
         "additionalProperties": false
@@ -231,7 +257,7 @@
             "description": "The currency the amount is in. Currently only GBP, EUR and USD are supported."
           },
           "creditCard": {
-            "$ref": "#/components/schemas/CreditCard"
+            "$ref": "#/components/schemas/CreditCardWriteModel"
           }
         },
         "additionalProperties": false
