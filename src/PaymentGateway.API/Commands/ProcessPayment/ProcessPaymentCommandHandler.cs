@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using PaymentGateway.API.Mappers;
+using PaymentGateway.API.Metrics;
 using PaymentGateway.Domain.Entities;
 using PaymentGateway.Domain.Exceptions;
 using PaymentGateway.Domain.Repositories;
@@ -24,7 +25,8 @@ public class ProcessPaymentCommandHandler : IRequestHandler<ProcessPaymentComman
 
         _bankRetryPolicy = Policy
             .Handle<BankRateLimitException>()
-            .WaitAndRetry(5, _ => TimeSpan.FromMilliseconds(50));
+            .WaitAndRetry(5, _ => TimeSpan.FromMilliseconds(50),
+                onRetry: (_, _) => { Counters.BankRequestsRateLimitCounter.Inc(); });
     }
 
     public async Task<ProcessPaymentResult> Handle(ProcessPaymentCommand request, CancellationToken cancellationToken)
@@ -41,6 +43,7 @@ public class ProcessPaymentCommandHandler : IRequestHandler<ProcessPaymentComman
             _bankRetryPolicy.Execute(() =>
             {
                 var bankResponse = _paymentService.ProcessPayment(Mapper.ToBankPaymentRequest(payment));
+                Counters.BankRequestsCounter.Inc();
 
                 if (bankResponse.PaymentAccepted)
                 {
@@ -53,6 +56,8 @@ public class ProcessPaymentCommandHandler : IRequestHandler<ProcessPaymentComman
 
                 _repository.Insert(payment);
             });
+
+            Counters.PaymentsProcessedCounter.WithLabels(payment.Amount.Currency.ToString()).Inc();
 
             return new ProcessPaymentResult(payment.Id, payment.Status.ToString());
         }

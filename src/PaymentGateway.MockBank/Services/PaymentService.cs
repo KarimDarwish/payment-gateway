@@ -15,12 +15,12 @@ public class PaymentService : IPaymentService
 
     public BankPaymentResponse ProcessPayment(BankPaymentRequest bankPaymentRequest)
     {
-        //Assumption: Our Bank declines payments if made by an American Express Card (4 digit CVV)
-        if (IsAmericanExpress(bankPaymentRequest.BankCreditCard)) return new BankPaymentResponse(false);
-
-        //Assumption: Our Bank rate limits us sometimes (for testing purposes triggered on amounts > 100)
+        //Assumption: Our Bank rate limits us sometimes and our payment gateway needs to handle that
         if (_randomNumberGenerator.GenerateRandomNumber(0, 2) == 1) throw new BankRateLimitException();
 
+        //Assumption: Our Bank declines payments if made by an American Express Card (4 digit CVV)
+        if (IsAmericanExpress(bankPaymentRequest.BankCreditCard)) return new BankPaymentResponse(false);
+        
         return new BankPaymentResponse(true);
     }
 
