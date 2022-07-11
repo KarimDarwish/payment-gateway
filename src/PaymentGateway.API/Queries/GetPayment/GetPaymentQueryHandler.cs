@@ -30,6 +30,7 @@ public class GetPaymentQueryHandler : IRequestHandler<GetPaymentQuery, GetPaymen
         var response = new GetPaymentResponse
         {
             PaymentId = payment.Id,
+            Status = payment.Status.ToString(),
             Amount = payment.Amount.Amount,
             Currency = payment.Amount.Currency.ToString(),
             CreditCard = creditCard

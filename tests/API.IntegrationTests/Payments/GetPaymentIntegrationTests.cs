@@ -6,6 +6,7 @@ using API.IntegrationTests.Configuration;
 using API.IntegrationTests.Extensions;
 using FluentAssertions;
 using PaymentGateway.API.Models;
+using PaymentGateway.Domain.Enums;
 using Xunit;
 
 namespace API.IntegrationTests.Payments;
@@ -35,6 +36,7 @@ public class GetPaymentIntegrationTests : IntegrationTest
         paymentResponse.Amount.Should().Be(command.Amount);
         paymentResponse.Currency.Should().Be(command.Currency);
         paymentResponse.CreditCard.Should().NotBeNull();
+        paymentResponse.Status.Should().Be(PaymentStatus.Processing.ToString());
     }
 
     [Fact]
