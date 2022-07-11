@@ -65,6 +65,28 @@ public class GetPaymentIntegrationTests : IntegrationTest
     }
 
     [Fact]
+    public async Task GetPayment_ifExists_doesNotReturnCvv()
+    {
+        //Arrange
+        const int givenCvv = 878;
+
+        var command = new ProcessPaymentCommandBuilder()
+            .WithCreditCardCvv(givenCvv)
+            .Build();
+
+        var payment = await Client.ProcessPayment(command).Deserialize<PaymentProcessedResponse>();
+
+        //Act
+        var response = await Client.GetPayment(payment.PaymentId);
+
+        //Assert
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+        var responseString = await response.Content.ReadAsStringAsync();
+        responseString.Should().NotContain(givenCvv.ToString());
+    }
+
+    [Fact]
     public async Task GetPayment_ifNotExisting_returnsNotFound()
     {
         //Arrange

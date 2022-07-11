@@ -49,7 +49,7 @@ public class ProcessPaymentCommandBuilder
         {
             Amount = _amount,
             Currency = _currency,
-            CreditCard = new CreditCardDto
+            CreditCard = new CreditCardWriteDto
             {
                 Cvv = _creditCardCvv,
                 CardNumber = _creditCardNumber,

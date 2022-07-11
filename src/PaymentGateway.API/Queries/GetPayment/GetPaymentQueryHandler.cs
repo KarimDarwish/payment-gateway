@@ -22,7 +22,7 @@ public class GetPaymentQueryHandler : IRequestHandler<GetPaymentQuery, GetPaymen
         if (payment is null) return new GetPaymentQueryResult(false, null);
 
 
-        var creditCard = Mapper.ToCreditCardDto(payment.CreditCard) with
+        var creditCard = Mapper.ToCreditCardReadDto(payment.CreditCard) with
         {
             CardNumber = MaskedCreditCardNumber.FromCreditCard(payment.CreditCard).Value
         };

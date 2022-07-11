@@ -17,5 +17,5 @@ public class ProcessPaymentCommand : IRequest<ProcessPaymentResult>
     [Required]
     public string Currency { get; set; }
 
-    [Required] public CreditCardDto CreditCard { get; set; }
+    [Required] public CreditCardWriteDto CreditCard { get; set; }
 }
