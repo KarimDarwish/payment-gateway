@@ -27,7 +27,7 @@ public class PaymentServiceTests
 
         _mockRandomNumberGenerator
             .Setup(service => service.GenerateRandomNumber(It.IsAny<int>(), It.IsAny<int>()))
-            .Returns(1);
+            .Returns(0);
 
         //Act
         var response = _service.ProcessPayment(paymentRequest);
