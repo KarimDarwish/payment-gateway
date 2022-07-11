@@ -14,7 +14,7 @@ public class CreditCard
         if (expiryDate.HasExpired) throw new CreditCardExpiredException();
         if (!IsCardNumberValid(cardNumber)) throw new CreditCardNumberMalformedException();
 
-        CardNumber = cardNumber;
+        CardNumber = cardNumber.Trim();
         ExpiryDate = expiryDate;
         Cvv = cvv;
     }
