@@ -30,7 +30,14 @@
         },
         "responses": {
           "201": {
-            "description": "Returns the newly created payment including its ID"
+            "description": "Returns the newly created payment including its ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentProcessedResponse"
+                }
+              }
+            }
           }
         }
       }
@@ -102,6 +109,19 @@
           "cvv": {
             "type": "integer",
             "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PaymentProcessedResponse": {
+        "required": [
+          "paymentId"
+        ],
+        "type": "object",
+        "properties": {
+          "paymentId": {
+            "type": "string",
+            "format": "uuid"
           }
         },
         "additionalProperties": false
