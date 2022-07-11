@@ -38,7 +38,7 @@ public class ProcessPaymentIntegrationTests : IntegrationTest
         response.PaymentId.Should().NotBeEmpty();
         response.Status.Should().Be(PaymentStatus.Completed.ToString());
     }
-    
+
     [Fact]
     public async Task ProcessPayment_withCardGettingDeclined_returnsDeclinedPayment()
     {
@@ -60,5 +60,100 @@ public class ProcessPaymentIntegrationTests : IntegrationTest
         var paymentResponse = await responseMessage.Deserialize<PaymentProcessedResponse>();
         paymentResponse.PaymentId.Should().NotBeEmpty();
         paymentResponse.Status.Should().Be(PaymentStatus.Declined.ToString());
+    }
+
+    [Fact]
+    public async Task ProcessPayment_withExpiredCard_returnsBadRequest()
+    {
+        //Arrange
+        var command = new ProcessPaymentCommandBuilder()
+            .WithAmount(9.90m)
+            .WithCurrency("USD")
+            .WithCreditCardNumber("123 456 789 1234567")
+            .WithCreditCardCvv(1234)
+            .WithCreditCardExpiration(12, 20)
+            .Build();
+
+        //Act
+        var responseMessage = await Client.ProcessPayment(command);
+
+        //Assert
+        responseMessage.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+    }
+
+    [Fact]
+    public async Task ProcessPayment_withInvalidCardNumber_returnsBadRequest()
+    {
+        //Arrange
+        var command = new ProcessPaymentCommandBuilder()
+            .WithAmount(9.90m)
+            .WithCurrency("USD")
+            .WithCreditCardNumber("123 456 789")
+            .WithCreditCardCvv(1234)
+            .WithCreditCardExpiration(12, 29)
+            .Build();
+
+        //Act
+        var responseMessage = await Client.ProcessPayment(command);
+
+        //Assert
+        responseMessage.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+    }
+
+    [Fact]
+    public async Task ProcessPayment_withInvalidCurrency_returnsBadRequest()
+    {
+        //Arrange
+        var command = new ProcessPaymentCommandBuilder()
+            .WithAmount(9.90m)
+            .WithCurrency("NOT-USD")
+            .WithCreditCardNumber("123 456 789 1234567")
+            .WithCreditCardCvv(1234)
+            .WithCreditCardExpiration(12, 29)
+            .Build();
+
+        //Act
+        var responseMessage = await Client.ProcessPayment(command);
+
+        //Assert
+        responseMessage.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+    }
+
+    [Fact]
+    public async Task ProcessPayment_withInvalidCvv_returnsBadRequest()
+    {
+        //Arrange
+        var command = new ProcessPaymentCommandBuilder()
+            .WithAmount(9.90m)
+            .WithCurrency("USD")
+            .WithCreditCardNumber("123 456 789 1234567")
+            .WithCreditCardCvv(1)
+            .WithCreditCardExpiration(12, 29)
+            .Build();
+
+        //Act
+        var responseMessage = await Client.ProcessPayment(command);
+
+        //Assert
+        responseMessage.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+    }
+
+    [Fact]
+    public async Task ProcessPayment_withInvalidAmount_returnsBadRequest()
+    {
+        //Arrange
+        var command = new ProcessPaymentCommandBuilder()
+            .WithAmount(-50.0m)
+            .WithCurrency("USD")
+            .WithCreditCardNumber("123 456 789 1234567")
+            .WithCreditCardCvv(1)
+            .WithCreditCardExpiration(12, 29)
+            .Build();
+
+        //Act
+        var responseMessage = await Client.ProcessPayment(command);
+
+        //Assert
+        responseMessage.StatusCode.Should().Be(HttpStatusCode.BadRequest);
     }
 }

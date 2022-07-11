@@ -1,5 +1,6 @@
 ﻿using System;
 using FluentAssertions;
+using PaymentGateway.Domain.Exceptions;
 using PaymentGateway.Domain.ValueObjects;
 using Xunit;
 
@@ -26,6 +27,6 @@ public class PaymentAmountTests
         var action = () => new PaymentAmount(-10.3m, Currencies.Euro);
 
         //Assert
-        action.Should().Throw<ArgumentOutOfRangeException>();
+        action.Should().Throw<InvalidPaymentAmountException>();
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using PaymentGateway.Domain.Exceptions;
 
 namespace PaymentGateway.Domain.ValueObjects;
 
@@ -12,8 +13,7 @@ public class CardExpiry
     {
         if (month is > 12 or < 1)
         {
-            throw new ArgumentOutOfRangeException(nameof(month), month,
-                "Provided month is not within the allowed range of 1 - 12");
+            throw new InvalidCardExpirationException("Provided month is not within the allowed range of 1 - 12");
         }
 
         Month = month;

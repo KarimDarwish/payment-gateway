@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using PaymentGateway.API.Mappers;
 using PaymentGateway.Domain.Entities;
+using PaymentGateway.Domain.Exceptions;
 using PaymentGateway.Domain.Repositories;
 using PaymentGateway.Domain.ValueObjects;
 using PaymentGateway.MockBank.Exceptions;
@@ -20,36 +21,43 @@ public class ProcessPaymentCommandHandler : IRequestHandler<ProcessPaymentComman
     {
         _repository = repository;
         _paymentService = paymentService;
-        
+
         _bankRetryPolicy = Policy.Handle<BankRateLimitException>()
             .WaitAndRetry(retryCount: 5, sleepDurationProvider: _ => TimeSpan.FromMilliseconds(50));
     }
 
-    public Task<ProcessPaymentResult> Handle(ProcessPaymentCommand request, CancellationToken cancellationToken)
+    public async Task<ProcessPaymentResult> Handle(ProcessPaymentCommand request, CancellationToken cancellationToken)
     {
-        var creditCard = Mapper.ToCreditCard(request.CreditCard);
-        var currency = Mapper.ToCurrency(request.Currency);
-
-        var amount = new PaymentAmount(request.Amount, currency);
-        var payment = new Payment(creditCard, amount);
-
-
-        _bankRetryPolicy.Execute(() =>
+        try
         {
-            var bankResponse = _paymentService.ProcessPayment(Mapper.ToBankPaymentRequest(payment));
+            var creditCard = Mapper.ToCreditCard(request.CreditCard);
+            var currency = Mapper.ToCurrency(request.Currency);
 
-            if (bankResponse.PaymentAccepted)
+            var amount = new PaymentAmount(request.Amount, currency);
+            var payment = new Payment(creditCard, amount);
+
+
+            _bankRetryPolicy.Execute(() =>
             {
-                payment.Accept();
-            }
-            else
-            {
-                payment.Decline();
-            }
+                var bankResponse = _paymentService.ProcessPayment(Mapper.ToBankPaymentRequest(payment));
 
-            _repository.Insert(payment);
-        });
+                if (bankResponse.PaymentAccepted)
+                {
+                    payment.Accept();
+                }
+                else
+                {
+                    payment.Decline();
+                }
 
-        return Task.FromResult(new ProcessPaymentResult(payment.Id, payment.Status.ToString()));
+                _repository.Insert(payment);
+            });
+
+            return new ProcessPaymentResult(payment.Id, payment.Status.ToString());
+        }
+        catch (DomainValidationException validationException)
+        {
+            return new ProcessPaymentResult(validationException.Message);
+        }
     }
 }

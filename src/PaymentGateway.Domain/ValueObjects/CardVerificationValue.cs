@@ -1,4 +1,6 @@
-﻿namespace PaymentGateway.Domain.ValueObjects;
+﻿using PaymentGateway.Domain.Exceptions;
+
+namespace PaymentGateway.Domain.ValueObjects;
 
 public class CardVerificationValue
 {
@@ -10,8 +12,7 @@ public class CardVerificationValue
 
         if (value < 0 || lengthOfValue is < 3 or > 4)
         {
-            throw new ArgumentOutOfRangeException(nameof(value), value,
-                "The provided CVV is not formatted correctly, expected an absolute number with 3 or 4 digits");
+            throw new InvalidCardVerificationValueException();
         }
 
         Value = value;

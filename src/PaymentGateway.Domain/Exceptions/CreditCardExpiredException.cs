@@ -3,7 +3,7 @@
 namespace PaymentGateway.Domain.Exceptions;
 
 [Serializable]
-public class CreditCardExpiredException : Exception
+public class CreditCardExpiredException : DomainValidationException
 {
     public CreditCardExpiredException() : base("The provided credit card has expired")
     {

@@ -1,5 +1,5 @@
-﻿using System;
-using FluentAssertions;
+﻿using FluentAssertions;
+using PaymentGateway.Domain.Exceptions;
 using PaymentGateway.Domain.ValueObjects;
 using Xunit;
 
@@ -17,7 +17,7 @@ public class CardExpiryTests
         var action = () => new CardExpiry(invalidMonth, 25);
 
         //Assert
-        action.Should().Throw<ArgumentOutOfRangeException>();
+        action.Should().Throw<InvalidCardExpirationException>();
     }
 
     [Fact]

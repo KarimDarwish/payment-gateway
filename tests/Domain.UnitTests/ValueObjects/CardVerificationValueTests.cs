@@ -1,5 +1,5 @@
-﻿using System;
-using FluentAssertions;
+﻿using FluentAssertions;
+using PaymentGateway.Domain.Exceptions;
 using PaymentGateway.Domain.ValueObjects;
 using Xunit;
 
@@ -35,6 +35,6 @@ public class CardVerificationValueTests
         var action = () => new CardVerificationValue(invalidValue);
 
         //Assert
-        action.Should().Throw<ArgumentOutOfRangeException>();
+        action.Should().Throw<InvalidCardVerificationValueException>();
     }
 }
