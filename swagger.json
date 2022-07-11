@@ -38,6 +38,16 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Returns the error message in case any validation errors occur",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentProcessingFailedResponse"
+                }
+              }
+            }
           }
         }
       }
@@ -63,10 +73,24 @@
         ],
         "responses": {
           "200": {
-            "description": "Returns the payment with the corresponding ID"
+            "description": "Returns the payment with the corresponding ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetPaymentResponse"
+                }
+              }
+            }
           },
           "404": {
-            "description": "If no payment with this ID exists"
+            "description": "Returned if no payment with the given ID exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       }
@@ -105,6 +129,36 @@
         },
         "additionalProperties": false
       },
+      "GetPaymentResponse": {
+        "required": [
+          "amount",
+          "creditCard",
+          "currency",
+          "paymentId",
+          "status"
+        ],
+        "type": "object",
+        "properties": {
+          "paymentId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "status": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "number",
+            "format": "double"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "creditCard": {
+            "$ref": "#/components/schemas/CreditCard"
+          }
+        },
+        "additionalProperties": false
+      },
       "PaymentProcessedResponse": {
         "required": [
           "paymentId",
@@ -121,6 +175,43 @@
           }
         },
         "additionalProperties": false
+      },
+      "PaymentProcessingFailedResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ProblemDetails": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "detail": {
+            "type": "string",
+            "nullable": true
+          },
+          "instance": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": { }
       },
       "ProcessPaymentCommand": {
         "required": [
