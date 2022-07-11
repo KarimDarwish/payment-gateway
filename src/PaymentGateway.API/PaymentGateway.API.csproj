@@ -11,9 +11,11 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="prometheus-net.AspNetCore" Version="6.0.0" />
-      <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.1" />
-      <PackageReference Include="prometheus-net" Version="6.0.0" />
+        <PackageReference Include="MediatR" Version="10.0.1" />
+        <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.1" />
+        <PackageReference Include="prometheus-net.AspNetCore" Version="6.0.0" />
+        <PackageReference Include="prometheus-net" Version="6.0.0" />
     </ItemGroup>
 
     <Target Name="SwaggerToFile" AfterTargets="AfterBuild" Condition="'$(Configuration)' != 'Release'">

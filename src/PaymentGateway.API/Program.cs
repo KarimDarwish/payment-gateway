@@ -10,8 +10,6 @@ builder.Services.AddHealthChecks();
 var app = builder.Build();
 
 app.UseMetricServer();
-
-app.MapGet("/", () => "Hello World!");
 app.MapHealthChecks("/health");
 app.UseHttpMetrics();
 
@@ -21,4 +19,5 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.MapControllers();
 app.Run();
