@@ -1,10 +1,10 @@
 ﻿using System.Net;
 using System.Threading.Tasks;
+using API.IntegrationTests.Builders;
 using API.IntegrationTests.Configuration;
 using API.IntegrationTests.Extensions;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
-using PaymentGateway.API.Commands.ProcessPayment;
 using PaymentGateway.API.Models;
 using PaymentGateway.Domain.Repositories;
 using Xunit;
@@ -21,18 +21,13 @@ public class ProcessPaymentIntegrationTests : IntegrationTest
     public async Task ProcessPayment_withValidPaymentDetails_returnsCreated()
     {
         //Arrange
-        var command = new ProcessPaymentCommand
-        {
-            Amount = 9.90m,
-            Currency = "GBP",
-            CreditCard = new CreditCardDto
-            {
-                CardNumber = "123 456 789 1234567",
-                Cvv = 123,
-                ExpiryMonth = 12,
-                ExpiryTwoDigitYear = 25
-            }
-        };
+        var command = new ProcessPaymentCommandBuilder()
+            .WithAmount(9.90m)
+            .WithCurrency("USD")
+            .WithCreditCardNumber("123 456 789 1234567")
+            .WithCreditCardCvv(123)
+            .WithCreditCardExpiration(12, 25)
+            .Build();
 
         //Act
         var responseMessage = await Client.ProcessPayment(command);

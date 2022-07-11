@@ -1,7 +1,8 @@
 ﻿using MediatR;
+using PaymentGateway.API.Mappers;
 using PaymentGateway.API.Models;
-using PaymentGateway.Domain.Entities;
 using PaymentGateway.Domain.Repositories;
+using PaymentGateway.Domain.ValueObjects;
 
 namespace PaymentGateway.API.Queries.GetPayment;
 
@@ -14,22 +15,26 @@ public class GetPaymentQueryHandler : IRequestHandler<GetPaymentQuery, GetPaymen
         _paymentRepository = paymentRepository;
     }
 
-    public Task<GetPaymentQueryResult> Handle(GetPaymentQuery request, CancellationToken cancellationToken)
+    public async Task<GetPaymentQueryResult> Handle(GetPaymentQuery request, CancellationToken cancellationToken)
     {
         var payment = _paymentRepository.Get(request.PaymentId);
 
-        if (payment is null) return PaymentNotFound();
+        if (payment is null) return new GetPaymentQueryResult(false, null);
 
-        return PaymentResponse(payment);
-    }
 
-    private Task<GetPaymentQueryResult> PaymentNotFound()
-    {
-        return Task.FromResult(new GetPaymentQueryResult(false, null));
-    }
+        var creditCard = Mapper.ToCreditCardDto(payment.CreditCard) with
+        {
+            CardNumber = MaskedCreditCardNumber.FromCreditCard(payment.CreditCard).Value
+        };
 
-    private Task<GetPaymentQueryResult> PaymentResponse(Payment payment)
-    {
-        return Task.FromResult(new GetPaymentQueryResult(true, new GetPaymentResponse {PaymentId = payment.Id}));
+        var response = new GetPaymentResponse
+        {
+            PaymentId = payment.Id,
+            Amount = payment.Amount.Amount,
+            Currency = payment.Amount.Currency.ToString(),
+            CreditCard = creditCard
+        };
+
+        return new GetPaymentQueryResult(true, response);
     }
 }

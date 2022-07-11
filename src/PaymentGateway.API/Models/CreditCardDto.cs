@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 namespace PaymentGateway.API.Models;
 
 [DisplayName("CreditCard")]
-public class CreditCardDto
+public record CreditCardDto
 {
     [Required] public string CardNumber { get; set; }
     [Required] [Range(1, 12)] public int ExpiryMonth { get; set; }
