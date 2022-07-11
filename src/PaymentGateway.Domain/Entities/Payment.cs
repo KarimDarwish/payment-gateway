@@ -8,7 +8,7 @@ public class Payment
     public Guid Id { get; }
     public CreditCard CreditCard { get; }
     public PaymentAmount Amount { get; }
-    public PaymentStatus Status { get; }
+    public PaymentStatus Status { get; private set; }
 
     public Payment(CreditCard creditCard, PaymentAmount amount)
     {
@@ -16,5 +16,15 @@ public class Payment
         CreditCard = creditCard;
         Amount = amount;
         Status = PaymentStatus.Processing;
+    }
+
+    public void Accept()
+    {
+        Status = PaymentStatus.Completed;
+    }
+    
+    public void Decline()
+    {
+        Status = PaymentStatus.Declined;
     }
 }
