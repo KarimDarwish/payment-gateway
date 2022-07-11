@@ -20,6 +20,11 @@
         <PackageReference Include="prometheus-net" Version="6.0.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\PaymentGateway.Domain\PaymentGateway.Domain.csproj" />
+      <ProjectReference Include="..\PaymentGateway.Infrastructure\PaymentGateway.Infrastructure.csproj" />
+    </ItemGroup>
+
     <Target Name="SwaggerToFile" AfterTargets="AfterBuild" Condition="'$(Configuration)' != 'Release'">
         <Exec Command="dotnet swagger tofile --output ../../swagger.json &quot;$(TargetPath)&quot; v1" />
     </Target>

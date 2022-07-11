@@ -33,9 +33,12 @@ public class ProcessPaymentIntegrationTests : IntegrationTest
         };
 
         //Act
-        var response = await Client.ProcessPayment(command);
+        var responseMessage = await Client.ProcessPayment(command);
 
         //Assert
-        response.StatusCode.Should().Be(HttpStatusCode.Created);
+        responseMessage.StatusCode.Should().Be(HttpStatusCode.Created);
+
+        var response = await responseMessage.Deserialize<PaymentProcessedResponse>();
+        response.PaymentId.Should().NotBeEmpty();
     }
 }
