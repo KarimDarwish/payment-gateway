@@ -3,6 +3,11 @@
   "info": {
     "title": "Payment Gateway",
     "description": "A payment gateway that allows merchants to offer their shoppers a secure way to pay for their products",
+    "termsOfService": "https://github.com/KarimDarwish/checkout-payment-gateway",
+    "contact": {
+      "name": "Karim Darwish",
+      "url": "https://github.com/KarimDarwish/checkout-payment-gateway"
+    },
     "version": "v1"
   },
   "paths": {
@@ -11,19 +16,12 @@
         "tags": [
           "Payments"
         ],
+        "summary": "Processes a new payment from a shopper",
+        "operationId": "ProcessNewPayment",
         "requestBody": {
+          "description": "The command containing payment details (credit card, amount, etc.)",
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ProcessPaymentCommand"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ProcessPaymentCommand"
-              }
-            },
-            "application/*+json": {
               "schema": {
                 "$ref": "#/components/schemas/ProcessPaymentCommand"
               }
@@ -32,7 +30,7 @@
         },
         "responses": {
           "201": {
-            "description": "Created"
+            "description": "Returns the newly created payment including its ID"
           }
         }
       }
@@ -42,7 +40,19 @@
         "tags": [
           "Payments"
         ],
+        "summary": "Allows one to get a specific payment using its ID",
+        "operationId": "GetPayment",
         "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "The identifier of the payment",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
           {
             "name": "id",
             "in": "path",
@@ -54,7 +64,10 @@
         ],
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "Returns the payment with the corresponding ID"
+          },
+          "404": {
+            "description": "If no payment with this ID exists"
           }
         }
       }
@@ -62,7 +75,7 @@
   },
   "components": {
     "schemas": {
-      "CreditCardDto": {
+      "CreditCard": {
         "required": [
           "cardNumber",
           "cvv",
@@ -75,10 +88,14 @@
             "type": "string"
           },
           "expiryMonth": {
+            "maximum": 12,
+            "minimum": 1,
             "type": "integer",
             "format": "int32"
           },
           "expiryTwoDigitYear": {
+            "maximum": 99,
+            "minimum": 0,
             "type": "integer",
             "format": "int32"
           },
@@ -98,14 +115,16 @@
         "type": "object",
         "properties": {
           "amount": {
+            "minimum": 0,
             "type": "number",
             "format": "double"
           },
           "currency": {
-            "type": "string"
+            "type": "string",
+            "description": "The currency the amount is in. Currently only GBP, EUR and USD are supported."
           },
           "creditCard": {
-            "$ref": "#/components/schemas/CreditCardDto"
+            "$ref": "#/components/schemas/CreditCard"
           }
         },
         "additionalProperties": false
