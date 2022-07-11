@@ -27,7 +27,7 @@ public class PaymentServiceTests
 
         _mockRandomNumberGenerator
             .Setup(service => service.GenerateRandomNumber(It.IsAny<int>(), It.IsAny<int>()))
-            .Returns(0);
+            .Returns(PaymentService.RateLimitNotHit);
 
         //Act
         var response = _service.ProcessPayment(paymentRequest);
@@ -45,7 +45,7 @@ public class PaymentServiceTests
 
         _mockRandomNumberGenerator
             .Setup(service => service.GenerateRandomNumber(It.IsAny<int>(), It.IsAny<int>()))
-            .Returns(0);
+            .Returns(PaymentService.RateLimitNotHit);
 
         //Act
         var response = _service.ProcessPayment(paymentRequest);
@@ -63,7 +63,7 @@ public class PaymentServiceTests
 
         _mockRandomNumberGenerator
             .Setup(service => service.GenerateRandomNumber(It.IsAny<int>(), It.IsAny<int>()))
-            .Returns(1);
+            .Returns(PaymentService.RateLimitHit);
 
         //Act
         var action = () => _service.ProcessPayment(paymentRequest);
