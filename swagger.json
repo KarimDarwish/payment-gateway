@@ -6,25 +6,110 @@
     "version": "v1"
   },
   "paths": {
-    "/": {
+    "/api/payments": {
+      "post": {
+        "tags": [
+          "Payments"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProcessPaymentCommand"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProcessPaymentCommand"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProcessPaymentCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      }
+    },
+    "/api/payments/{id}": {
       "get": {
         "tags": [
-          "PaymentGateway.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+          "Payments"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
         ],
         "responses": {
           "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
+            "description": "Success"
           }
         }
       }
     }
   },
-  "components": { }
+  "components": {
+    "schemas": {
+      "CreditCardDto": {
+        "required": [
+          "cardNumber",
+          "cvv",
+          "expiryMonth",
+          "expiryTwoDigitYear"
+        ],
+        "type": "object",
+        "properties": {
+          "cardNumber": {
+            "type": "string"
+          },
+          "expiryMonth": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "expiryTwoDigitYear": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "cvv": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ProcessPaymentCommand": {
+        "required": [
+          "amount",
+          "creditCard",
+          "currency"
+        ],
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "number",
+            "format": "double"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "creditCard": {
+            "$ref": "#/components/schemas/CreditCardDto"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
 }
