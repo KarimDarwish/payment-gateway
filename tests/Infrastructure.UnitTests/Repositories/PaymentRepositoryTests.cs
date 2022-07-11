@@ -22,7 +22,7 @@ public class PaymentRepositoryTests
     public void InsertPayment_ifValid_persistsPayment()
     {
         //Arrange
-        var creditCard = new CreditCard("2222420000001113", new CardExpiry(12, 25), new CardVerificationValue(123));
+        var creditCard = new CreditCard("222 242 000 000 1113", new CardExpiry(12, 25), new CardVerificationValue(123));
         var amount = new PaymentAmount(9.99m, Currencies.Euro);
         var payment = new Payment(creditCard, amount);
 
@@ -38,7 +38,7 @@ public class PaymentRepositoryTests
     public void InsertPayment_ifAlreadyExists_throws()
     {
         //Arrange
-        var creditCard = new CreditCard("2222420000001113", new CardExpiry(12, 25), new CardVerificationValue(123));
+        var creditCard = new CreditCard("222 242 000 000 1113", new CardExpiry(12, 25), new CardVerificationValue(123));
         var amount = new PaymentAmount(9.99m, Currencies.Euro);
         var payment = new Payment(creditCard, amount);
 
