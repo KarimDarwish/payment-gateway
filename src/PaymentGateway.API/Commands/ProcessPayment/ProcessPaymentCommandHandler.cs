@@ -25,6 +25,6 @@ public class ProcessPaymentCommandHandler : IRequestHandler<ProcessPaymentComman
 
         _repository.Insert(payment);
 
-        return Task.FromResult(new ProcessPaymentResult(payment.Id));
+        return Task.FromResult(new ProcessPaymentResult(payment.Id, payment.Status.ToString()));
     }
 }
