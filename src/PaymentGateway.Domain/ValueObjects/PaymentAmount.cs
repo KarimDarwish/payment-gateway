@@ -1,4 +1,6 @@
-﻿namespace PaymentGateway.Domain.ValueObjects;
+﻿using PaymentGateway.Domain.Exceptions;
+
+namespace PaymentGateway.Domain.ValueObjects;
 
 public class PaymentAmount
 {
@@ -7,11 +9,7 @@ public class PaymentAmount
 
     public PaymentAmount(decimal amount, Currency currency)
     {
-        if (amount < 0)
-        {
-            throw new ArgumentOutOfRangeException(nameof(amount), amount,
-                "Only absolute values are allowed as payment amount");
-        }
+        if (amount < 0) throw new InvalidPaymentAmountException();
 
         Amount = amount;
         Currency = currency;

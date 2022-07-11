@@ -3,7 +3,7 @@
 namespace PaymentGateway.Domain.Exceptions;
 
 [Serializable]
-public class InvalidCurrencyException : Exception
+public class InvalidCurrencyException : DomainValidationException
 {
     public InvalidCurrencyException(string givenCurrency) : base(
         $"The provided currency \"{givenCurrency}\" is not valid")

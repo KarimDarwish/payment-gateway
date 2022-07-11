@@ -30,9 +30,15 @@ public class PaymentsController : ControllerBase
     [ProducesResponseType(typeof(PaymentProcessedResponse), StatusCodes.Status201Created)]
     public async Task<ActionResult> ProcessNewPayment([FromBody] ProcessPaymentCommand command)
     {
-        var (paymentId, paymentStatus) = await _mediator.Send(command);
+        var result = await _mediator.Send(command);
 
-        var response = new PaymentProcessedResponse {PaymentId = paymentId, Status = paymentStatus};
+        if (!result.Success)
+        {
+            return BadRequest(new {Message = result.ErrorMessage});
+        }
+        
+        var response = new PaymentProcessedResponse
+            {PaymentId = result.PaymentId.GetValueOrDefault(), Status = result.PaymentStatus};
 
         return CreatedAtAction(nameof(GetPayment), new {id = response.PaymentId}, response);
     }
