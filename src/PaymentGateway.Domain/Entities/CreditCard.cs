@@ -12,9 +12,20 @@ public class CreditCard
     public CreditCard(string cardNumber, CardExpiry expiryDate, CardVerificationValue cvv)
     {
         if (expiryDate.HasExpired) throw new CreditCardExpiredException();
+        if (!IsCardNumberValid(cardNumber)) throw new CreditCardNumberMalformedException();
 
         CardNumber = cardNumber;
         ExpiryDate = expiryDate;
         Cvv = cvv;
+    }
+
+    private static bool IsCardNumberValid(string cardNumber)
+    {
+        var trimmedString = cardNumber.Replace(" ", string.Empty);
+
+        var isAllDigits = trimmedString.All(char.IsDigit);
+        var has16Characters = trimmedString.Length == 16;
+
+        return isAllDigits && has16Characters;
     }
 }

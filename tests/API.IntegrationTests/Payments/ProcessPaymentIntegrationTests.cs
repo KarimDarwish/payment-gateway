@@ -27,7 +27,7 @@ public class ProcessPaymentIntegrationTests : IntegrationTest
             Currency = "GBP",
             CreditCard = new CreditCardDto
             {
-                CardNumber = "123123213",
+                CardNumber = "123 456 789 1234567",
                 Cvv = 123,
                 ExpiryMonth = 12,
                 ExpiryTwoDigitYear = 25
