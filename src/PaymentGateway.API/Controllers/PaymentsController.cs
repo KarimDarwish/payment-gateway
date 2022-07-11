@@ -1,8 +1,9 @@
-﻿using MediatR;
+﻿using System.ComponentModel.DataAnnotations;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using PaymentGateway.API.Commands.ProcessPayment;
 using PaymentGateway.API.Models;
+using PaymentGateway.API.Queries.GetPayment;
 
 namespace PaymentGateway.API.Controllers;
 
@@ -45,8 +46,12 @@ public class PaymentsController : ControllerBase
     /// <response code="404">If no payment with this ID exists</response>
     [HttpGet("{id:guid}", Name = nameof(GetPayment))]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public ActionResult GetPayment([FromQuery, BindRequired] Guid id)
+    public async Task<ActionResult> GetPayment([Required] Guid id)
     {
-        return Ok();
+        var (success, response) = await _mediator.Send(new GetPaymentQuery(id));
+
+        if (!success) return NotFound();
+
+        return Ok(response);
     }
 }

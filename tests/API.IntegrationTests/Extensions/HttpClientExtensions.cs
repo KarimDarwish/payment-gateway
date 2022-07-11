@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -12,5 +13,10 @@ public static class HttpClientExtensions
     {
         return await client.PostAsync("api/payments",
             new StringContent(JsonConvert.SerializeObject(command), Encoding.UTF8, "application/json"));
+    }
+
+    public static async Task<HttpResponseMessage> GetPayment(this HttpClient client, Guid paymentId)
+    {
+        return await client.GetAsync($"api/payments/{paymentId}");
     }
 }
