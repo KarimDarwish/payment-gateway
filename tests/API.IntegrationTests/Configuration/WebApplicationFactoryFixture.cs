@@ -1,5 +1,9 @@
 ﻿using System;
+using API.IntegrationTests.TestServices;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.DependencyInjection;
+using PaymentGateway.MockBank.Services.RandomNumber;
 
 namespace API.IntegrationTests.Configuration;
 
@@ -9,7 +13,13 @@ public class WebApplicationFactoryFixture : IDisposable
 
     public WebApplicationFactoryFixture()
     {
-        Factory = new WebApplicationFactory<Program>();
+        Factory = new WebApplicationFactory<Program>().WithWebHostBuilder(builder =>
+        {
+            builder.ConfigureTestServices(services =>
+            {
+                services.AddSingleton<IRandomNumberGenerator, TestRandomNumberGenerator>();
+            });
+        });
     }
 
     public void Dispose()
