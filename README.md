@@ -37,17 +37,128 @@ Alternatively, you can start the application the following command in the root d
 
 # Architecture
 
-<details>
-  <summary>Click to expand</summary>
-	test
-</details>
+This application uses an onion architecture to structure the projects:
+
+#### Domain
+This includes all aggregates (e.g. a PaymentAggregate), entities and value objects of the given domain and all its business logic.
+
+It is completely persistent-ignorant apart from the fact that it defines an interface for a repository (as per DDD) but has no further information on how the repository or any other (non-domain) services are implemented.
+
+The domain layer also does not have any dependencies on other projects in this solution, in a more complex project a reference to e.g. a shared kernel could be established.
+
+#### Infrastructure
+This layer defines how infrastructure concerns/a communication with the "outside world" is implemented within the application.
+
+For the payment gateway, this means implementing the ``IPaymentRepository`` and providing a database for it.
+
+#### API
+The API project provides the entrypoint for the API and includes the application logic as well as concepts like defining and registering services for dependency injection.
+
 
 # Functionality and Flow
 
-<details>
-  <summary>Click to expand</summary>
-	test
-</details>
+## Processing a Payment
+
+```
+POST /api/payments
+Content-Type: application/json
+
+{
+  "amount": 9.90,
+  "currency": "USD",
+  "creditCard": {
+    "cardNumber": "123 123 123 123 1234",
+    "expiryMonth": 12,
+    "expiryTwoDigitYear": 25,
+    "cvv": 123
+  }
+}
+```
+
+```mermaid
+sequenceDiagram
+    participant Merchant
+    participant PaymentGateway
+    participant Bank
+    Merchant->>PaymentGateway: Requests processing of payment
+    PaymentGateway->>Bank: Processes Payment
+    PaymentGateway->>PaymentGateway: Possible retry on rate limit
+    Bank->>PaymentGateway: Approves/Declines Payment
+    PaymentGateway->>Merchant: Returns payment with status
+```
+
+Before processing the payment, additional validations are performed on all data passed by the merchant such as:
+- Validating format and expiration of the credit card
+- Validating format and length of CVV and expiry dates
+- Validating the amount of the payment
+- Validating that the currency is supported by the payment gateway
+
+Possible responses:
+
+#### 200 OK
+
+If all validations pass, this status code with the payment ID and the status will be returned:
+
+```
+{
+  "paymentId": "6b45a067-6166-41a2-a544-cda876c36120",
+  "status": "Completed"
+}
+```
+
+#### 400 Bad Request
+
+If any validations fail, the error message will be returned:
+
+```
+{
+  "message": "The provided credit card number is malformed, expected 16 digits."
+}
+```
+
+
+## Getting Payment Details
+
+```
+GET /api/payments/{paymentId}
+```
+
+```mermaid
+sequenceDiagram
+    participant Merchant
+    participant PaymentGateway
+    Merchant->>PaymentGateway: Request payment details
+    alt payment exists
+        PaymentGateway->>Merchant: Returns payment details (200 OK)
+    else payment not found
+        PaymentGateway->>Merchant: Payment Not Found (404 Not Found)
+    end
+```
+
+Possible responses:
+
+#### 200 OK
+
+Returns the payment details with a masked credit card and no CVV for security purposes.
+
+```
+{
+  "paymentId": "a4faf2ec-d8b1-45a6-b0b3-649fd4136006",
+  "status": "Completed",
+  "amount": 9.9,
+  "currency": "USD",
+  "creditCard": {
+    "cardNumber": "*** *** *** *** 1234",
+    "expiryMonth": 12,
+    "expiryTwoDigitYear": 25
+  }
+}
+```
+
+#### 404 Not Found
+
+Will be returned if the Payment Gateway could not find any payment with the given ID
+
 
 # Assumptions
 
@@ -68,13 +179,16 @@ Following assumptions have been made:
 
 <details>
   <summary>Click to expand</summary>
-	Some parts of the application that still need improvement to make it production ready:
+
+  Some parts of the application that still need improvement to make it production ready:
 
 ### Merchant and Payment Validation
 
 More details about the merchant and the payment are required to ensure correctness of the payment and prevent any abuse of the payment gateway from unauthorized actors.
 
 Steps like validating the merchant, preventing unwanted duplicate payments and associating a product or a subscription would then be possible.
+
+The same is the case for the API validation, libraries like ``FluentValidation`` allow for easier validation configuration and can return all validation errors within a request body instead of just the first one that was caught.
 
 ### Authentication/Authorization
 
