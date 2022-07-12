@@ -11,8 +11,10 @@ Content:
 * [Setup](#Setup)
 * [Architecture](#Architecture)
 * [Functionality and Flow](#Overview)
-* [Overview](#Overview)
-* [Overview](#Overview)
+* [Assumptions](#Assumptions)
+* [Areas for Improvement](#Areas for Improvement)
+* [Extra Mile Bonus Points](#Extra Mile Bonus Points)
+* [Cloud Technologies](#Cloud Technologies)
 
 # Setup
 
@@ -24,6 +26,13 @@ To start the payment gateway using docker compose, execute
 ``docker compose up`` or `docker-compose up` (depending on your Docker version)
 
 in the root directory of the project.
+
+Alternatively, you can start the application the following command in the root directory of the project:
+
+```
+ dotnet run --project .\src\PaymentGateway.API\PaymentGateway.API.csproj
+ ```
+
 
 # Architecture
 <details>
@@ -38,10 +47,16 @@ in the root directory of the project.
 </details>
 
 # Assumptions
-<details>
-  <summary>Click to expand</summary>
-	test
-</details>
+Following assumptions have been made:
+
+### Bank
+
+- The bank declines American Express Cards (identified by a 4 digit CVV)
+- The bank rate limits the payment gateway occasionally
+
+### Payment Gateway
+- Only the length and the expiry date of the credit card is validated, further validations (if they adhere to vendor conventions, etc.) is not required
+- No merchant/shopper details are required in the initial processing of the payment 
 
 # Areas for Improvement
 <details>
@@ -60,6 +75,10 @@ Two additional jobs run on every main commit:
 - a ``docker-build`` job which attempts to build the docker image (this can be extended to a continuous deployment pipeline in the future)
 - a ``swagger-publish`` job which uses the `swagger.json` file to build a Swagger UI and publishes it to GitHub Pages
 
+Additional improvements:
+- Using multi stage workflows to facilitate continuous deployment (CD) to different stages
+- Using path filters to only trigger specific jobs if the corresponding files change
+- Spinning up required dependencies for integration tests if this changes in the future
 
 ## Metrics
 
@@ -89,7 +108,7 @@ In the future this can be improved to:
 ## Fault Tolerance
 
 One assumption that has been made is that we need to take care of rate limits by the bank.
-These occur randomly in the mocked bank.
+These occur randomly in the mocked bank provided by this project.
 
 To prevent this failure from reaching our merchants, retries using ``Polly`` have been implemented.
 
@@ -99,7 +118,6 @@ This can be extended to:
 
 - use a different backoff strategy to avoid sending too many requests while still being rate limited
 - take care of idempotency in requests so that only idempotent requests are retried to not cause any unwanted side effects
-
 
 ## Swagger 
 
@@ -115,6 +133,9 @@ Instead, a ``swagger.json`` file is generated on build time that is used to crea
 
 It is available under: https://karimdarwish.github.io/checkout-payment-gateway/
 
+In the future, Swagger can be used to:
+- automatically generate client libraries for clients consuming the API (e.g. frontend, other backend services)
+
 ## Hardened Dockerfile
 
 To improve security and harden the environment the application runs in, several measures have been taken:
@@ -122,6 +143,9 @@ To improve security and harden the environment the application runs in, several 
 - A separate (non-root) user is created that runs the application within the container
 - An alpine based image of the .NET runtime is used (fewer known vulnerabilities)
 - Port 8080 is used for the service to avoid security issues with a default port 80
+
+Additional steps that can be performed in the future to harden the Docker image:
+- using a read only file system unless required for e.g. logs
 
 # Cloud Technologies
 <details>
