@@ -7,11 +7,13 @@ using PaymentGateway.MockBank.Services;
 using PaymentGateway.MockBank.Services.RandomNumber;
 using Prometheus;
 using Serilog;
-using Serilog.Events;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Host.UseSerilog((_, configuration) => configuration.WriteTo.Console());
+builder.Host.UseSerilog((_, configuration) => configuration
+    .WriteTo.Console()
+    .Enrich.FromLogContext()
+);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -24,6 +26,7 @@ builder.Services.AddMediatR(typeof(Program).GetTypeInfo().Assembly);
 
 var app = builder.Build();
 
+app.UseSerilogRequestLogging();
 app.UseMetricServer();
 app.MapHealthChecks("/health");
 app.UseHttpMetrics();
@@ -35,14 +38,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.MapControllers();
-
-Log.Logger = new LoggerConfiguration()
-    .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
-    .Enrich.FromLogContext()
-    .WriteTo.Console()
-    .CreateLogger();
-
-app.UseSerilogRequestLogging();
 
 try
 {
