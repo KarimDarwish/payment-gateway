@@ -322,6 +322,7 @@ The service retries the payment request five times with a delay of 50ms between 
 This can be extended to:
 
 - use a different backoff strategy to avoid sending too many requests while still being rate limited
+- improve the fault tolerance in case the retries are not sufficient and the bank continues to rate limit the Payment Gateway
 - take care of idempotency in requests so that only idempotent requests are retried not to cause any unwanted side
   effects
 
