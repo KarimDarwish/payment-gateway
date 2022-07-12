@@ -339,6 +339,12 @@ Additional steps that can be performed in the future to harden the Docker image:
 
 - using a read-only file system unless required for, e.g. logs
 
+## Logging
+
+Custom logging using ``Serilog`` has been configured, currently the only sink that is connected is the console output of the application.
+
+Additional sinks can be added in the future (e.g. Datadog, Seq, etc.) due to Serilogs rich extensibility.
+
 <br/><br/>
 
 # Cloud Technologies
