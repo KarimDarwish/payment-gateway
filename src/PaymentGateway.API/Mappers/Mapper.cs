@@ -17,12 +17,7 @@ public static class Mapper
 
     public static CreditCardReadDto ToCreditCardReadDto(CreditCard creditCard)
     {
-        return new CreditCardReadDto
-        {
-            CardNumber = creditCard.CardNumber,
-            ExpiryMonth = creditCard.ExpiryDate.Month,
-            ExpiryTwoDigitYear = creditCard.ExpiryDate.Year
-        };
+        return new CreditCardReadDto(creditCard.CardNumber, creditCard.ExpiryDate.Month, creditCard.ExpiryDate.Year);
     }
 
     public static Currency ToCurrency(string currency)
