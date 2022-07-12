@@ -10,9 +10,10 @@ Swagger API Documentation:
 Content:
 
 * [Setup](#Setup)
+* [Assumptions](#Assumptions)
 * [Architecture](#Architecture)
 * [Functionality and Flow](#Overview)
-* [Assumptions](#Assumptions)
+* [Tests](#Tests)
 * [Areas for Improvement](#Areas-for-Improvement)
 * [Extra Mile Bonus Points](#Extra-Mile-Bonus-Points)
 * [Cloud Technologies](#Cloud-Technologies)
@@ -177,6 +178,22 @@ Returns the payment details with a masked credit card and no CVV for security pu
 
 Will be returned if the Payment Gateway could not find any payment with the given ID
 
+<br/><br/>
+
+# Tests
+
+The project has been developed using a combination of outside-in and inside-out TDD practices, depending on the specific feature. 
+
+All tests attempt to test using the interface instead of depending on concrete implementation details and test edge cases in all scenarios.
+
+Tests for the Payment Gateway are structured in:
+
+- ``API.IntegrationTests``: integration testing the API using an HTTP Client
+- ``Domain.UnitTests``: unit tests for the business logic and its validation
+- ``Infrastructure.UnitTests``: unit tests for the implemented database solution
+- ``MockBank.UnitTests``: unit tests testing the behavior of the mocked bank including its different validation conditions
+
+Additional tests such as E2E Tests could make sense with a more complete system of a Payment Gateway (including frontend, other components, etc.).
 
 <br/><br/>
 
