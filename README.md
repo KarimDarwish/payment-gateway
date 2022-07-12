@@ -23,13 +23,13 @@ The application has been dockerized, only Docker is needed to start it locally.
 
 ### Docker Compose
 
-To start the payment gateway using docker compose, execute
+To start the payment gateway using Docker Compose, execute
 
 ``docker compose up`` or `docker-compose up` (depending on your Docker version)
 
 in the root directory of the project.
 
-Alternatively, you can start the application the following command in the root directory of the project:
+Alternatively, you can start the application with the following command in the root directory of the project:
 
 ```
  dotnet run --project .\src\PaymentGateway.API\PaymentGateway.API.csproj
@@ -42,17 +42,17 @@ This application uses an onion architecture to structure the projects:
 ### Domain
 This includes all aggregates (e.g. a PaymentAggregate), entities and value objects of the given domain and all its business logic.
 
-It is completely persistent-ignorant apart from the fact that it defines an interface for a repository (as per DDD) but has no further information on how the repository or any other (non-domain) services are implemented.
+It is entirely persistent-ignorant apart from defining an interface for a repository (as per DDD). Still, it has no further information on how the repository or other (non-domain) services are implemented.
 
-The domain layer also does not have any dependencies on other projects in this solution, in a more complex project a reference to e.g. a shared kernel could be established.
+The domain layer also does not depend on other projects in this solution; in a more complex project, a reference to e.g. a shared kernel could be established.
 
 ### Infrastructure
 This layer defines how infrastructure concerns/a communication with the "outside world" is implemented within the application.
 
-For the payment gateway, this means implementing the ``IPaymentRepository`` and providing a database for it.
+For the Payment Gateway, this means implementing the ``IPaymentRepository`` and providing a database for it.
 
 ### API
-The API project provides the entrypoint for the API and includes the application logic as well as concepts like defining and registering services for dependency injection.
+The API project provides the entry point for the API and includes the application logic and concepts like defining and registering services for dependency injection.
 
 
 # Functionality and Flow
@@ -184,11 +184,11 @@ Following assumptions have been made:
 
 ### Merchant and Payment Validation
 
-More details about the merchant and the payment are required to ensure correctness of the payment and prevent any abuse of the payment gateway from unauthorized actors.
+More details about the merchant and the payment are required to ensure the correctness of the payment and prevent any abuse of the payment gateway from unauthorized actors.
 
 Steps like validating the merchant, preventing unwanted duplicate payments and associating a product or a subscription would then be possible.
 
-The same is the case for the API validation, libraries like ``FluentValidation`` allow for easier validation configuration and can return all validation errors within a request body instead of just the first one that was caught.
+The same is the case for the API validation; libraries like ``FluentValidation`` allow for a more straightforward validation configuration and can return all validation errors within a request body instead of just the first error that was caught.
 
 ### Authentication/Authorization
 
@@ -200,16 +200,16 @@ configuring the JWT validation by calling `.AddJwtBearer()`.
 An authorization strategy would then ensure that only users with the correct permissions can process payments/view
 payment details.
 
-### Multi Tenancy
+### Multi-Tenancy
 
-At the moment, payments of all tenants are stored alike and no concept of multi tenancy is in place.
+At the moment, payments of all tenants are stored alike, and no concept of multi-tenancy is in place.
 
-A more sophisticated setup (depending on the used database technology but e.g. a database/collection per tenant) would
+A more sophisticated setup (depending on the used database technology but, e.g. a database/collection per tenant) would
 need to be added to ensure data of multiple tenants is isolated
 
 ### Database
 
-In the current state, an in-memory database is used and no data is made durable outside of the process of the
+In the current state, an in-memory database is used, and no data is made durable outside of the process of the
 application.
 
 A production-ready and scalable database would be required to persist payments across the lifetime of the application
@@ -219,7 +219,7 @@ Storing credit card details is a whole separate topic and should only be done by
 
 ### Bank
 
-Currently the bank is mocked and is deployed as part of the payment gateway. In a real world scenario, this would be a separate service.
+Currently, the bank is mocked and is deployed as part of the payment gateway. In a real-world scenario, this would be a separate service.
 
 Because of that, additional concerns have to be taken care of when communicating with the bank:
 
@@ -258,7 +258,7 @@ Two additional jobs run on every main commit:
 
 Additional improvements:
 
-- Using multi stage workflows to facilitate continuous deployment (CD) to different stages
+- Using multi-stage workflows to facilitate continuous deployment (CD) to different stages
 - Using path filters to only trigger specific jobs if the corresponding files change
 - Spinning up required dependencies for integration tests if this changes in the future
 
@@ -273,21 +273,21 @@ Available metrics are:
 - ``payment_gateway_payments_processed_total``: a counter that increases for every processed payment
 - ``payment_gateway_bank_requests_total``: a counter that increases for every request made to the bank
 - ``payment_gateway_bank_requests_failed``: a counter that increases for every failed request to the bank (due to the
-  bank rate limiting us)
+  bank rate-limiting us)
 
-In production, this endpoint would not be exposed to the public but only be available to internal observability toos.
+In production, this endpoint would not be exposed to the public but only be available to internal observability tools.
 
 ## Health Checks
 
 Using ASP.NET Core Health Checks, a specific ``/health`` endpoint has been configured to allow for health probes of the
 application.
 
-Currently it is used as health check within the ``Dockerfile`` to let Docker know whether the application is available
+Currently, it is used as a health check within the ``Dockerfile`` to let Docker know whether the application is available
 or not.
 
-In the future this can be improved to:
+In the future, this can be improved to:
 
-- include other dependencies (database, message queue, etc.)
+- including other dependencies (database, message queue, etc.)
 - be used as Startup/Readiness/Liveness probe within Kubernetes
 - include a ``/ready`` endpoint to differentiate between readiness and liveness
 
@@ -298,12 +298,12 @@ mocked bank provided by this project.
 
 To prevent this failure from reaching our merchants, retries using ``Polly`` have been implemented.
 
-The service retries the payment request 5 times with a delay of 50ms between retry.
+The service retries the payment request five times with a delay of 50ms between retries.
 
 This can be extended to:
 
 - use a different backoff strategy to avoid sending too many requests while still being rate limited
-- take care of idempotency in requests so that only idempotent requests are retried to not cause any unwanted side
+- take care of idempotency in requests so that only idempotent requests are retried not to cause any unwanted side
   effects
 
 ## Swagger
@@ -330,20 +330,20 @@ In the future, Swagger can be used to:
 To improve security and harden the environment the application runs in, several measures have been taken:
 
 - A separate (non-root) user is created that runs the application within the container
-- An alpine based image of the .NET runtime is used (fewer known vulnerabilities)
+- An alpine-based image of the .NET runtime is used (fewer known vulnerabilities)
 - Port 8080 is used for the service to avoid security issues with a default port 80
 
 Additional steps that can be performed in the future to harden the Docker image:
 
-- using a read only file system unless required for e.g. logs
+- using a read-only file system unless required for, e.g. logs
 
 # Cloud Technologies
 
-Depending on the planned scale of the Payment Gateway, different approaches to deploying it in th cloud need to be evaluated. 
+Depending on the planned scale of the Payment Gateway, different approaches to deploying it in the cloud need to be evaluated.
 
-Important factors here are team knowledge, team size, scalability/flexibility requirements and possibility to deal with operational overhead.
+Important factors here are team knowledge, team size, scalability/flexibility requirements and the possibility of dealing with operational overhead.
 
-For a larger scale project with lots of involved services and complex operational requirements:
+For a larger-scale project with lots of involved services and complex operational requirements:
 
 - Managed Kubernetes Cluster (Azure AKS, AWS EKS or GKE)
 - Managed database, depending on the chosen technology (DynamoDB, RDS, CosmosDB, etc.)
@@ -354,5 +354,4 @@ For a smaller scale deployment of the Payment Gateway:
 - Serverless (Azure Functions, AWS Serverless or Google Cloud Functions)
 - Managed database (DynamoDB, RDS, CosmosDB, etc.)
 
-The serverless setup allows for great scalability and elasticity and while it introduces some challenges (cold start, environment variables, communication) they do make sense for small scale deployments of services.
-
+The serverless setup allows for great scalability and elasticity, and while it introduces some challenges (cold start, environment variables, communication), they make sense for small-scale deployments of services.
