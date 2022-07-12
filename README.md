@@ -35,6 +35,21 @@ Alternatively, you can start the application with the following command in the r
  dotnet run --project .\src\PaymentGateway.API\PaymentGateway.API.csproj
  ```
 
+# Assumptions
+
+Following assumptions have been made:
+
+### Bank
+
+- The bank declines American Express Cards (identified by a 4 digit CVV)
+- The bank rate limits the payment gateway occasionally
+
+### Payment Gateway
+
+- Only the length and the expiry date of the credit card is validated, further validations (if they adhere to vendor
+  conventions, etc.) is not required
+- No merchant/shopper details are required in the initial processing of the payment
+
 # Architecture
 
 This application uses an onion architecture to structure the projects:
@@ -53,7 +68,6 @@ For the Payment Gateway, this means implementing the ``IPaymentRepository`` and 
 
 ### API
 The API project provides the entry point for the API and includes the application logic and concepts like defining and registering services for dependency injection.
-
 
 # Functionality and Flow
 
@@ -158,22 +172,6 @@ Returns the payment details with a masked credit card and no CVV for security pu
 #### 404 Not Found
 
 Will be returned if the Payment Gateway could not find any payment with the given ID
-
-
-# Assumptions
-
-Following assumptions have been made:
-
-### Bank
-
-- The bank declines American Express Cards (identified by a 4 digit CVV)
-- The bank rate limits the payment gateway occasionally
-
-### Payment Gateway
-
-- Only the length and the expiry date of the credit card is validated, further validations (if they adhere to vendor
-  conventions, etc.) is not required
-- No merchant/shopper details are required in the initial processing of the payment
 
 # Areas for Improvement
 
