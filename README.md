@@ -30,6 +30,8 @@ To start the payment gateway using Docker Compose, execute
 
 in the root directory of the project.
 
+The application is then available under `localhost:5555`. An alternative port can be specified in the `docker-comopse.yml`.
+
 Alternatively, you can start the application with the following command in the root directory of the project:
 
 ```
