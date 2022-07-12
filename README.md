@@ -1,11 +1,11 @@
 ## Payment Gateway
 
-[![Build and Test](https://github.com/KarimDarwish/checkout-payment-gateway/actions/workflows/build-test.yml/badge.svg)](https://github.com/KarimDarwish/checkout-payment-gateway/actions/workflows/build-test.yml)
-[![Docker Build](https://github.com/KarimDarwish/checkout-payment-gateway/actions/workflows/docker-build.yml/badge.svg)](https://github.com/KarimDarwish/checkout-payment-gateway/actions/workflows/docker-build.yml)
-[![Publish Swagger](https://github.com/KarimDarwish/checkout-payment-gateway/actions/workflows/swagger-publish.yml/badge.svg)](https://github.com/KarimDarwish/checkout-payment-gateway/actions/workflows/swagger-publish.yml)
+[![Build and Test](https://github.com/KarimDarwish/payment-gateway/actions/workflows/build-test.yml/badge.svg)](https://github.com/KarimDarwish/payment-gateway/actions/workflows/build-test.yml)
+[![Docker Build](https://github.com/KarimDarwish/payment-gateway/actions/workflows/docker-build.yml/badge.svg)](https://github.com/KarimDarwish/payment-gateway/actions/workflows/docker-build.yml)
+[![Publish Swagger](https://github.com/KarimDarwish/payment-gateway/actions/workflows/swagger-publish.yml/badge.svg)](https://github.com/KarimDarwish/payment-gateway/actions/workflows/swagger-publish.yml)
 
 Swagger API Documentation:
-[![Swagger API Documentation](https://validator.swagger.io/validator?url=https://karimdarwish.github.io/checkout-payment-gateway/swagger.json)](https://karimdarwish.github.io/checkout-payment-gateway/)
+[![Swagger API Documentation](https://validator.swagger.io/validator?url=https://karimdarwish.github.io/payment-gateway/swagger.json)](https://karimdarwish.github.io/payment-gateway/)
 
 Content:
 
@@ -332,7 +332,7 @@ This is disabled in production builds.
 Instead, a ``swagger.json`` file is generated on build time that is used to create and upload a Swagger UI to a GitHub
 Pages site.
 
-It is available under: https://karimdarwish.github.io/checkout-payment-gateway/
+It is available under: https://karimdarwish.github.io/payment-gateway/
 
 In the future, Swagger can be used to:
 
