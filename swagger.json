@@ -107,19 +107,25 @@
         "type": "object",
         "properties": {
           "cardNumber": {
-            "type": "string"
+            "type": "string",
+            "description": "A masked representation of the credit card number",
+            "example": "*** *** *** *** 1234"
           },
           "expiryMonth": {
             "maximum": 12,
             "minimum": 1,
             "type": "integer",
-            "format": "int32"
+            "description": "Month of expiry for the credit card (1-12)",
+            "format": "int32",
+            "example": 12
           },
           "expiryTwoDigitYear": {
             "maximum": 99,
             "minimum": 0,
             "type": "integer",
-            "format": "int32"
+            "description": "Year of expiry for the credit card as two digit year",
+            "format": "int32",
+            "example": 29
           }
         },
         "additionalProperties": false
@@ -134,23 +140,31 @@
         "type": "object",
         "properties": {
           "cardNumber": {
-            "type": "string"
+            "type": "string",
+            "description": "The card number of the credit card",
+            "example": "123 123 123 123 1234"
           },
           "expiryMonth": {
             "maximum": 12,
             "minimum": 1,
             "type": "integer",
-            "format": "int32"
+            "description": "Month of expiry for the credit card (1-12)",
+            "format": "int32",
+            "example": 12
           },
           "expiryTwoDigitYear": {
             "maximum": 99,
             "minimum": 0,
             "type": "integer",
-            "format": "int32"
+            "description": "Year of expiry for the credit card as two digit year",
+            "format": "int32",
+            "example": 29
           },
           "cvv": {
             "type": "integer",
-            "format": "int32"
+            "description": "The card verification value used to make the payment",
+            "format": "int32",
+            "example": 123
           }
         },
         "additionalProperties": false
@@ -167,17 +181,25 @@
         "properties": {
           "paymentId": {
             "type": "string",
-            "format": "uuid"
+            "description": "A unique identifier for the payment",
+            "format": "uuid",
+            "example": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
           },
           "status": {
-            "type": "string"
+            "type": "string",
+            "description": "The status of the payment. Can be \"Completed\" or \"Declined\"",
+            "example": "Completed"
           },
           "amount": {
             "type": "number",
-            "format": "double"
+            "description": "The total amount of the payment",
+            "format": "double",
+            "example": 9.9
           },
           "currency": {
-            "type": "string"
+            "type": "string",
+            "description": "The currency used as part of the payment",
+            "example": "GBP"
           },
           "creditCard": {
             "$ref": "#/components/schemas/CreditCardReadModel"
@@ -194,20 +216,28 @@
         "properties": {
           "paymentId": {
             "type": "string",
-            "format": "uuid"
+            "description": "A unique identifier for the payment",
+            "format": "uuid",
+            "example": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
           },
           "status": {
-            "type": "string"
+            "type": "string",
+            "description": "The status of the payment. Can be \"Completed\" or \"Declined\"",
+            "example": "Completed"
           }
         },
         "additionalProperties": false
       },
       "PaymentProcessingFailedResponse": {
+        "required": [
+          "message"
+        ],
         "type": "object",
         "properties": {
           "message": {
             "type": "string",
-            "nullable": true
+            "description": "A message describing the error",
+            "example": "The provided credit card number is malformed, expected 16 digits."
           }
         },
         "additionalProperties": false
@@ -250,11 +280,14 @@
           "amount": {
             "minimum": 0,
             "type": "number",
-            "format": "double"
+            "description": "The payment amount of the product/subscription",
+            "format": "double",
+            "example": 9.9
           },
           "currency": {
             "type": "string",
-            "description": "The currency the amount is in. Currently only GBP, EUR and USD are supported."
+            "description": "The currency the amount is in. Currently only GBP, EUR and USD are supported.",
+            "example": "GBP"
           },
           "creditCard": {
             "$ref": "#/components/schemas/CreditCardWriteModel"
