@@ -66,7 +66,9 @@ Following assumptions have been made:
 
 # Areas for Improvement
 
-Some parts of the application that still need improvement to make it production ready:
+<details>
+  <summary>Click to expand</summary>
+	Some parts of the application that still need improvement to make it production ready:
 
 ### Merchant and Payment Validation
 
@@ -123,6 +125,8 @@ Other observability concepts that could be added:
 
 - Application Insights, Performance Monitoring and Exception Handling
 - Centralized Log Aggregation (Splunk, Grafana Loki, Datadog, etc.)
+
+</details>
 
 # Extra Mile Bonus Points
 
