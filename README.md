@@ -42,7 +42,8 @@ Following assumptions have been made:
 ### Bank
 
 - The bank declines American Express Cards (identified by a 4 digit CVV)
-- The bank rate limits the payment gateway occasionally
+- The bank rate limits the Payment Gateway occasionally
+- Communication between the Payment Gateway and the Bank is synchronous, the bank immediately can immediately respond (in a timely manner) if a payment can be acceepted or needs to be declined
 
 ### Payment Gateway
 
@@ -50,10 +51,8 @@ Following assumptions have been made:
   conventions, etc.) is not done in the first iteration
 - No merchant/shopper details are required in the initial processing of the payment
 
+<br/><br/>
 # Architecture
-
-<details>
-  <summary>Click to expand</summary>
 
 This application uses an onion architecture to structure the projects:
 
@@ -72,13 +71,9 @@ For the Payment Gateway, this means implementing the ``IPaymentRepository`` and 
 ### API
 The API project provides the entry point for the API and includes the application logic and concepts like defining and registering services for dependency injection.
 
-</details>
+<br/><br/>
 
 # Functionality and Flow
-
-<details>
-  <summary>Click to expand</summary>
-
 
 ## Processing a Payment
 
@@ -182,14 +177,10 @@ Returns the payment details with a masked credit card and no CVV for security pu
 
 Will be returned if the Payment Gateway could not find any payment with the given ID
 
-</details>
+
+<br/><br/>
 
 # Areas for Improvement
-
-<details>
-  <summary>Click to expand</summary>
-
-  Some parts of the application that still need improvement to make it production ready:
 
 ### Merchant and Payment Validation
 
@@ -250,12 +241,10 @@ Other observability concepts that could be added:
 - Application Insights, Performance Monitoring and Exception Handling
 - Centralized Log Aggregation (Splunk, Grafana Loki, Datadog, etc.)
 
-</details>
+
+<br/><br/>
 
 # Extra Mile Bonus Points
-
-<details>
-  <summary>Click to expand</summary>
 
 
 ## CI
@@ -349,12 +338,10 @@ To improve security and harden the environment the application runs in, several 
 Additional steps that can be performed in the future to harden the Docker image:
 
 - using a read-only file system unless required for, e.g. logs
-</details>
+
+<br/><br/>
 
 # Cloud Technologies
-
-<details>
-  <summary>Click to expand</summary>
 
 Depending on the planned scale of the Payment Gateway, different approaches to deploying it in the cloud need to be evaluated.
 
@@ -372,4 +359,3 @@ For a smaller scale deployment of the Payment Gateway:
 - Managed database (DynamoDB, RDS, CosmosDB, etc.)
 
 The serverless setup allows for great scalability and elasticity, and while it introduces some challenges (cold start, environment variables, communication), they make sense for small-scale deployments of services.
-</details>
