@@ -11,8 +11,7 @@ using Serilog.Events;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Host.UseSerilog((ctx, lc) => lc
-    .WriteTo.Console());
+builder.Host.UseSerilog((_, configuration) => configuration.WriteTo.Console());
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
