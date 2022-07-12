@@ -47,10 +47,13 @@ Following assumptions have been made:
 ### Payment Gateway
 
 - Only the length and the expiry date of the credit card is validated, further validations (if they adhere to vendor
-  conventions, etc.) is not required
+  conventions, etc.) is not done in the first iteration
 - No merchant/shopper details are required in the initial processing of the payment
 
 # Architecture
+
+<details>
+  <summary>Click to expand</summary>
 
 This application uses an onion architecture to structure the projects:
 
@@ -69,7 +72,13 @@ For the Payment Gateway, this means implementing the ``IPaymentRepository`` and 
 ### API
 The API project provides the entry point for the API and includes the application logic and concepts like defining and registering services for dependency injection.
 
+</details>
+
 # Functionality and Flow
+
+<details>
+  <summary>Click to expand</summary>
+
 
 ## Processing a Payment
 
@@ -173,6 +182,8 @@ Returns the payment details with a masked credit card and no CVV for security pu
 
 Will be returned if the Payment Gateway could not find any payment with the given ID
 
+</details>
+
 # Areas for Improvement
 
 <details>
@@ -242,6 +253,10 @@ Other observability concepts that could be added:
 </details>
 
 # Extra Mile Bonus Points
+
+<details>
+  <summary>Click to expand</summary>
+
 
 ## CI
 
@@ -334,8 +349,12 @@ To improve security and harden the environment the application runs in, several 
 Additional steps that can be performed in the future to harden the Docker image:
 
 - using a read-only file system unless required for, e.g. logs
+</details>
 
 # Cloud Technologies
+
+<details>
+  <summary>Click to expand</summary>
 
 Depending on the planned scale of the Payment Gateway, different approaches to deploying it in the cloud need to be evaluated.
 
@@ -353,3 +372,4 @@ For a smaller scale deployment of the Payment Gateway:
 - Managed database (DynamoDB, RDS, CosmosDB, etc.)
 
 The serverless setup allows for great scalability and elasticity, and while it introduces some challenges (cold start, environment variables, communication), they make sense for small-scale deployments of services.
+</details>
