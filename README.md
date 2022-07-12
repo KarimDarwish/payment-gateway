@@ -39,19 +39,19 @@ Alternatively, you can start the application the following command in the root d
 
 This application uses an onion architecture to structure the projects:
 
-#### Domain
+### Domain
 This includes all aggregates (e.g. a PaymentAggregate), entities and value objects of the given domain and all its business logic.
 
 It is completely persistent-ignorant apart from the fact that it defines an interface for a repository (as per DDD) but has no further information on how the repository or any other (non-domain) services are implemented.
 
 The domain layer also does not have any dependencies on other projects in this solution, in a more complex project a reference to e.g. a shared kernel could be established.
 
-#### Infrastructure
+### Infrastructure
 This layer defines how infrastructure concerns/a communication with the "outside world" is implemented within the application.
 
 For the payment gateway, this means implementing the ``IPaymentRepository`` and providing a database for it.
 
-#### API
+### API
 The API project provides the entrypoint for the API and includes the application logic as well as concepts like defining and registering services for dependency injection.
 
 
@@ -215,6 +215,7 @@ application.
 A production-ready and scalable database would be required to persist payments across the lifetime of the application
 and allow us to scale the payment gateway horizontally.
 
+Storing credit card details is a whole separate topic and should only be done by designated services (e.g. Checkout.com) that have the necessary legal (PCI compliance) and security requirements.
 
 ### Bank
 
@@ -338,9 +339,20 @@ Additional steps that can be performed in the future to harden the Docker image:
 
 # Cloud Technologies
 
-<details>
-  <summary>Click to expand</summary>
-	test
-</details>
+Depending on the planned scale of the Payment Gateway, different approaches to deploying it in th cloud need to be evaluated. 
 
+Important factors here are team knowledge, team size, scalability/flexibility requirements and possibility to deal with operational overhead.
+
+For a larger scale project with lots of involved services and complex operational requirements:
+
+- Managed Kubernetes Cluster (Azure AKS, AWS EKS or GKE)
+- Managed database, depending on the chosen technology (DynamoDB, RDS, CosmosDB, etc.)
+- A separate way to store credit card information (only done by the Payment Gateway if it is PCI certified and can handle encryption/security requirements)
+
+For a smaller scale deployment of the Payment Gateway:
+
+- Serverless (Azure Functions, AWS Serverless or Google Cloud Functions)
+- Managed database (DynamoDB, RDS, CosmosDB, etc.)
+
+The serverless setup allows for great scalability and elasticity and while it introduces some challenges (cold start, environment variables, communication) they do make sense for small scale deployments of services.
 
