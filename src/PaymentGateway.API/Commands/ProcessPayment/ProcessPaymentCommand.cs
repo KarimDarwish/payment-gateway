@@ -18,4 +18,11 @@ public class ProcessPaymentCommand : IRequest<ProcessPaymentResult>
     public string Currency { get; set; }
 
     [Required] public CreditCardWriteDto CreditCard { get; set; }
+
+    public ProcessPaymentCommand(decimal amount, string currency, CreditCardWriteDto creditCard)
+    {
+        Amount = amount;
+        Currency = currency;
+        CreditCard = creditCard;
+    }
 }

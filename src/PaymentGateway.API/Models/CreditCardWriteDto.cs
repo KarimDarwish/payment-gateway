@@ -10,4 +10,12 @@ public record CreditCardWriteDto
     [Required] [Range(1, 12)] public int ExpiryMonth { get; set; }
     [Required] [Range(0, 99)] public int ExpiryTwoDigitYear { get; set; }
     [Required] public int Cvv { get; set; }
+
+    public CreditCardWriteDto(string cardNumber, int expiryMonth, int expiryTwoDigitYear, int cvv)
+    {
+        CardNumber = cardNumber;
+        ExpiryMonth = expiryMonth;
+        ExpiryTwoDigitYear = expiryTwoDigitYear;
+        Cvv = cvv;
+    }
 }

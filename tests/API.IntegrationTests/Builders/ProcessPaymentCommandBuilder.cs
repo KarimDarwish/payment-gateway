@@ -45,17 +45,9 @@ public class ProcessPaymentCommandBuilder
 
     public ProcessPaymentCommand Build()
     {
-        return new ProcessPaymentCommand
-        {
-            Amount = _amount,
-            Currency = _currency,
-            CreditCard = new CreditCardWriteDto
-            {
-                Cvv = _creditCardCvv,
-                CardNumber = _creditCardNumber,
-                ExpiryMonth = _creditCardExpiryMonth,
-                ExpiryTwoDigitYear = _creditCardExpiryYear
-            }
-        };
+        var creditCard = new CreditCardWriteDto(_creditCardNumber, _creditCardExpiryMonth, _creditCardExpiryYear,
+            _creditCardCvv);
+
+        return new ProcessPaymentCommand(_amount, _currency, creditCard);
     }
 }
