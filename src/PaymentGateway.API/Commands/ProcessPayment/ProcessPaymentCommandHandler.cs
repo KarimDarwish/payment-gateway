@@ -9,6 +9,7 @@ using PaymentGateway.MockBank.Exceptions;
 using PaymentGateway.MockBank.Services;
 using Polly;
 using Polly.Retry;
+using Serilog;
 
 namespace PaymentGateway.API.Commands.ProcessPayment;
 
@@ -26,7 +27,11 @@ public class ProcessPaymentCommandHandler : IRequestHandler<ProcessPaymentComman
         _bankRetryPolicy = Policy
             .Handle<BankRateLimitException>()
             .WaitAndRetry(5, _ => TimeSpan.FromMilliseconds(50),
-                onRetry: (_, _) => { Counters.BankRequestsRateLimitCounter.Inc(); });
+                onRetry: (_, _, retry, _) =>
+                {
+                    Log.Information($"Received Rate Limit Response by bank, Retry: {retry}/5 ");
+                    Counters.BankRequestsRateLimitCounter.Inc();
+                });
     }
 
     public async Task<ProcessPaymentResult> Handle(ProcessPaymentCommand request, CancellationToken cancellationToken)
@@ -63,6 +68,8 @@ public class ProcessPaymentCommandHandler : IRequestHandler<ProcessPaymentComman
         }
         catch (DomainValidationException validationException)
         {
+            Log.Error(validationException,
+                $"Payment with amount {request.Amount} {request.Currency} failed validation");
             return new ProcessPaymentResult(validationException.Message);
         }
     }
