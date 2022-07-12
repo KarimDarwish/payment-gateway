@@ -14,44 +14,44 @@ Content:
 * [Overview](#Overview)
 * [Overview](#Overview)
 
-## Setup
+# Setup
 
 The application has been dockerized, only Docker is needed to start it locally.
 
-#### Docker Compose
+### Docker Compose
 To start the payment gateway using docker compose, execute 
 
 ``docker compose up`` or `docker-compose up` (depending on your Docker version)
 
 in the root directory of the project.
 
-## Architecture
+# Architecture
 <details>
   <summary>Click to expand</summary>
 	test
 </details>
 
-## Functionality and Flow
+# Functionality and Flow
 <details>
   <summary>Click to expand</summary>
 	test
 </details>
 
-## Assumptions
+# Assumptions
 <details>
   <summary>Click to expand</summary>
 	test
 </details>
 
-## Areas for Improvement
+# Areas for Improvement
 <details>
   <summary>Click to expand</summary>
 	test
 </details>
 
-## Extra Mile Bonus Points
+# Extra Mile Bonus Points
 
-### CI
+## CI
 
 A continuous integration (CI) pipeline has been created using GitHub Action that performs an automated build and test on every pull request to the main branch.
 
@@ -61,7 +61,7 @@ Two additional jobs run on every main commit:
 - a ``swagger-publish`` job which uses the `swagger.json` file to build a Swagger UI and publishes it to GitHub Pages
 
 
-### Metrics
+## Metrics
 
 A ``/metrics`` endpoint has been made available using `prometheus-net` where metrics can be scraped and processed by observability tools (e.g. Prometheus).
 
@@ -74,7 +74,7 @@ Available metrics are:
 
 In production, this endpoint would not be exposed to the public. Instead it should only be available to internal observability toos.
 
-### Health Checks
+## Health Checks
 
 Using ASP.NET Core Health Checks, a specific ``/health`` endpoint has been configured to allow for health probes of the application.
 
@@ -86,7 +86,7 @@ In the future this can be improved to:
 - be used as Startup/Readiness/Liveness probe within Kubernetes
 - include a ``/ready`` endpoint to differentiate between readiness and liveness
 
-### Fault Tolerance
+## Fault Tolerance
 
 One assumption that has been made is that we need to take care of rate limits by the bank.
 These occur randomly in the mocked bank.
@@ -101,7 +101,7 @@ This can be extended to:
 - take care of idempotency in requests so that only idempotent requests are retried to not cause any unwanted side effects
 
 
-### Swagger 
+## Swagger 
 
 To document the API of the service, Swagger is being used.
 
@@ -115,7 +115,7 @@ Instead, a ``swagger.json`` file is generated on build time that is used to crea
 
 It is available under: https://karimdarwish.github.io/checkout-payment-gateway/
 
-### Hardened Dockerfile
+## Hardened Dockerfile
 
 To improve security and harden the environment the application runs in, several measures have been taken:
 
@@ -123,7 +123,7 @@ To improve security and harden the environment the application runs in, several 
 - An alpine based image of the .NET runtime is used (fewer known vulnerabilities)
 - Port 8080 is used for the service to avoid security issues with a default port 80
 
-## Cloud Technologies
+# Cloud Technologies
 <details>
   <summary>Click to expand</summary>
 	test
