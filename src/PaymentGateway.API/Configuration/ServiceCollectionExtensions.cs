@@ -14,11 +14,11 @@ public static class ServiceCollectionExtensions
             {
                 Version = "v1",
                 Title = "Payment Gateway",
-                TermsOfService = new Uri("https://github.com/KarimDarwish/checkout-payment-gateway"),
+                TermsOfService = new Uri("https://github.com/KarimDarwish/payment-gateway"),
                 Contact = new OpenApiContact
                 {
                     Name = "Karim Darwish",
-                    Url = new Uri("https://github.com/KarimDarwish/checkout-payment-gateway")
+                    Url = new Uri("https://github.com/KarimDarwish/payment-gateway")
                 },
                 Description =
                     "A payment gateway that allows merchants to offer their shoppers a secure way to pay for their products",
