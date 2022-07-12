@@ -3,10 +3,10 @@
   "info": {
     "title": "Payment Gateway",
     "description": "A payment gateway that allows merchants to offer their shoppers a secure way to pay for their products",
-    "termsOfService": "https://github.com/KarimDarwish/checkout-payment-gateway",
+    "termsOfService": "https://github.com/KarimDarwish/payment-gateway",
     "contact": {
       "name": "Karim Darwish",
-      "url": "https://github.com/KarimDarwish/checkout-payment-gateway"
+      "url": "https://github.com/KarimDarwish/payment-gateway"
     },
     "version": "v1"
   },
