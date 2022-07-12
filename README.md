@@ -22,15 +22,24 @@ Content:
 
 The application has been dockerized, only Docker is needed to start it locally.
 
+Application URL: `localhost:5555`
+
 ### Docker Compose
 
-To start the payment gateway using Docker Compose, execute
+To start the payment gateway using Docker Compose, execute the following command in the root directory:
 
-``docker compose up`` or `docker-compose up` (depending on your Docker version)
+```
+ docker compose up
+ ```
 
-in the root directory of the project.
+(`docker-compose up` if you are using an older Docker version)
 
-The application is then available under `localhost:5555`. An alternative port can be specified in the `docker-comopse.yml`.
+
+This will build the docker image using the Dockerfile and start a container, publishing the correct port.
+
+The application is then available under `localhost:5555`, an alternative port can be specified in the `docker-comopse.yml`. 
+
+
 
 Alternatively, you can start the application with the following command in the root directory of the project:
 
