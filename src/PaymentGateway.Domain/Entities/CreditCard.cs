@@ -5,6 +5,7 @@ namespace PaymentGateway.Domain.Entities;
 
 public class CreditCard
 {
+    
     public string CardNumber { get; }
     public CardExpiry ExpiryDate { get; }
     public CardVerificationValue Cvv { get; }
