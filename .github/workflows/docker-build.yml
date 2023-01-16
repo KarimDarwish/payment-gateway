@@ -13,4 +13,4 @@ jobs:
       - uses: actions/checkout@v2
       
       - name: Docker Build
-        run: docker buildx build . --tag payment-gateway:${{ github.run_id }} --cache-from=type=local,dest=./mnt/efs/fs1/docker --import-cache=--cache-from=type=local,src=./mnt/efs/fs1/docker
+        run: docker buildx build --tag payment-gateway:${{ github.run_id }} --cache-from=type=local,dest=./mnt/efs/fs1/docker --import-cache=--cache-from=type=local,src=./mnt/efs/fs1/docker .
