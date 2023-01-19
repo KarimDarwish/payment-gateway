@@ -14,12 +14,17 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       
+      - name: Setup Docker Buildx
+        run: docker buildx create --name remote-buildkit-host-1 --driver remote tcp://ec2-18-156-83-98.eu-central-1.compute.amazonaws.com:8082
+        
+      - name: Use Buildx
+        run: docker buildx use remote-buildkit-host-1
+      
+      - name: Use Buildx
+        run: docker buildx ls
+        
       - name: Docker Login
         run: sudo docker login ghcr.io/karimdarwish/payment-gateway -u KarimDarwish -p ${{ secrets.GCR_PAT }}
                     
       - name: Push
         run: sudo docker buildx build --push -t ghcr.io/karimdarwish/payment-gateway/app:pr-39 .
-
-      - name: Logs
-        if: always()
-        run: docker logs buildx_buildkit_remote-buildkit-host
