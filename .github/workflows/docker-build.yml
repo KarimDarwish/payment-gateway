@@ -33,3 +33,7 @@ jobs:
           
       - name: Push
         run: docker buildx build --push -t ${{ env.REGISTRY }}/${{ steps.meta.outputs.tags }} .
+
+      - name: Logs
+        if: always()
+        run: docker logs buildx_buildkit_remote-buildkit-host
