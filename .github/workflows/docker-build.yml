@@ -34,5 +34,5 @@ jobs:
           push: true
           file: ./Dockerfile
           builder: remote-buildkit-host
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: ${{ env.REGISTRY }}/${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
