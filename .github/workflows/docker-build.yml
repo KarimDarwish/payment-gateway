@@ -25,24 +25,3 @@ jobs:
       - name: Push
         if: always()
         run: sudo docker buildx build --push -t ghcr.io/karimdarwish/payment-gateway/app:pr-39 .
-                    
-      - name: Remove existing Buildx
-        run: docker buildx rm remote-buildkit-host-1
-        
-      - name: Setup Docker Buildx
-        if: always()
-        run: docker buildx create --name remote-buildkit-host-1 --driver remote tcp://ec2-18-156-83-98.eu-central-1.compute.amazonaws.com:8082
-
-      - name: Use Buildx 2
-        if: always()
-        run: docker buildx use remote-buildkit-host-1
-      
-      - name: Use Buildx 2
-        if: always()
-        run: docker buildx ls
-        
-      - name: Push
-        if: always()
-        run: sudo docker buildx build --push -t ghcr.io/karimdarwish/payment-gateway/app:pr-39 .
-        
-                
