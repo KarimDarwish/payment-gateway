@@ -6,7 +6,7 @@ on:
     branches: [ main ]
     
 env:
-  REGISTRY: ghcr.io/${{ github.repository }}
+  REGISTRY: ghcr.io/karimdarwish/payment-gateway
 
 jobs:
   build:
@@ -28,4 +28,4 @@ jobs:
           images: app
           
       - name: Push
-        run: docker buildx build --push -t ${{ env.REGISTRY }}/appname:version .
+        run: docker buildx build --push -t ${{ env.REGISTRY }}/${{ steps.meta.outputs.tags }} .
