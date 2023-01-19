@@ -16,13 +16,7 @@ jobs:
       
       - name: Docker Login
         run: sudo docker login ghcr.io/karimdarwish/payment-gateway -u KarimDarwish -p ${{ secrets.GCR_PAT }}
-          
-      - name: Docker meta
-        id: meta
-        uses: docker/metadata-action@v4
-        with:
-          images: app
-          
+                    
       - name: Push
         run: sudo docker buildx build --push -t ghcr.io/karimdarwish/payment-gateway/app:pr-39 .
 
