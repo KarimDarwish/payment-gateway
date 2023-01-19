@@ -19,7 +19,7 @@ jobs:
       - uses: actions/checkout@v2
       
       - name: Docker Login
-        run: docker login ${{ env.REGISTRY }} -u ${{ github.repository_owner }} -p ${{ secrets.GITHUB_TOKEN }}
+        run: sudo docker login ${{ env.REGISTRY }} -u ${{ github.repository_owner }} -p ${{ secrets.GITHUB_TOKEN }}
           
       - name: Docker meta
         id: meta
@@ -28,7 +28,7 @@ jobs:
           images: app
           
       - name: Push
-        run: docker buildx build --push -t ${{ env.REGISTRY }}/${{ steps.meta.outputs.tags }} .
+        run: sudo docker buildx build --push -t ${{ env.REGISTRY }}/${{ steps.meta.outputs.tags }} .
 
       - name: Logs
         if: always()
