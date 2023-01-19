@@ -11,15 +11,11 @@ env:
 jobs:
   build:
     runs-on: self-hosted
-    permissions:
-      contents: read
-      id-token: write
-      packages: write
     steps:
       - uses: actions/checkout@v2
       
       - name: Docker Login
-        run: sudo docker login ${{ env.REGISTRY }} -u ${{ github.repository_owner }} -p ${{ secrets.GCR_PAT }}
+        run: sudo docker login ghcr.io/karimdarwish/payment-gateway -u KarimDarwish -p ${{ secrets.GCR_PAT }}
           
       - name: Docker meta
         id: meta
@@ -28,7 +24,7 @@ jobs:
           images: app
           
       - name: Push
-        run: sudo docker buildx build --push -t ${{ env.REGISTRY }}/${{ steps.meta.outputs.tags }} .
+        run: sudo docker buildx build --push -t ghcr.io/karimdarwish/payment-gateway/app:pr-39 .
 
       - name: Logs
         if: always()
