@@ -18,12 +18,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       
-      - name: Login to GHCR
-        uses: docker/login-action@v2.1.0
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Docker Login
+        run: docker login ${{ env.REGISTRY }} -u ${{ github.repository_owner }} -p ${{ secrets.GITHUB_TOKEN }}
           
       - name: Docker meta
         id: meta
