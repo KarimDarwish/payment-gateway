@@ -29,7 +29,13 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
           
-          
-      - name: Push
-        if: always()
-        run: sudo docker buildx build --push -t ghcr.io/karimdarwish/payment-gateway/app:pr-39 .
+      - name: Build and push
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: true
+          builder: remote-buildkit-host
+          tags: ghcr.io/karimdarwish/payment-gateway/app:pr-39
+#      - name: Push
+#        if: always()
+ #       run: sudo docker buildx build --push -t ghcr.io/karimdarwish/payment-gateway/app:pr-39 .
