@@ -25,4 +25,4 @@ jobs:
           context: .
           push: true
           builder: remote-buildkit-host
-          tags: ghcr.io/karimdarwish/payment-gateway/payment-gateway:${{ github.run_id }}
+          tags: ghcr.io/karimdarwish/payment-gateway/payment-gateway-img:${{ github.run_id }}
