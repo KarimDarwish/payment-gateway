@@ -19,7 +19,7 @@ jobs:
       - uses: actions/checkout@v2
       
       - name: Docker Login
-        run: sudo docker login ${{ env.REGISTRY }} -u ${{ github.repository_owner }} -p ${{ secrets.GITHUB_TOKEN }}
+        run: sudo docker login ${{ env.REGISTRY }} -u ${{ github.repository_owner }} -p ${{ secrets.GCR_PAT }}
           
       - name: Docker meta
         id: meta
