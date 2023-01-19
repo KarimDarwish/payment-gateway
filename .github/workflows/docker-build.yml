@@ -26,13 +26,6 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: app
-      
-      - name: Build and push
-        uses: docker/build-push-action@v3.3.0
-        with:
-          context: .
-          push: true
-          file: ./Dockerfile
-          builder: remote-buildkit-host
-          tags: ghcr.io/karimdarwish/${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          
+      - name: Push
+        run: docker buildx build --push -t ${{ env.REGISTRY }}/appname:version .
