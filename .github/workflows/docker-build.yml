@@ -16,6 +16,10 @@ jobs:
       
       - name: Use Buildx 1
         if: always()
+        run: docker buildx ls
+
+      - name: Use Buildx 1
+        if: always()
         run: docker buildx rm remote-buildkit-host-1
         
   #    - name: Docker Login
