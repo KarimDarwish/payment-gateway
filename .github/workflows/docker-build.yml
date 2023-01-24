@@ -31,4 +31,4 @@ jobs:
           context: .
           push: true
           builder: remote-buildkit-host
-          tags: ghcr.io/karimdarwish/payment-gateway/app:pr-39
+          tags: ghcr.io/karimdarwish/payment-gateway/app:pr-40
