@@ -19,7 +19,7 @@ jobs:
           echo "${{ secrets.AWS_CLIENT_VPN_CONFIG }}" > config.ovpn  
 
       - name: Connect VPN
-        run: sudo openvpn --config ".github/vpn/config.ovpn"
+        run: sudo openvpn --config "config.ovpn"
 
       - name: Docker Build
         run: docker build . -t payment-gateway:${{ github.run_id }}
