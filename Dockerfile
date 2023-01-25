@@ -10,6 +10,7 @@ RUN dotnet publish PaymentGateway.API/PaymentGateway.API.csproj --output out --n
 FROM mcr.microsoft.com/dotnet/aspnet:6.0-alpine3.14
 
 # Creating a new user so that the container is not running with the root user
+
 RUN addgroup --gid 1000 -S app && adduser --uid 1000 -S app -G app
 RUN mkdir /app && chown -R app:app /app
 
