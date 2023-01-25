@@ -31,4 +31,4 @@ jobs:
           context: .
           push: true
           builder: remote-buildkit-host
-          tags: 906437365765.dkr.ecr.eu-central-1.amazonaws.com/test/app-1:pr-40
+          tags: app-1:pr-40
