@@ -13,6 +13,13 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get --assume-yes --no-install-recommends install openvpn          
+      
+      - name: Setup VPN config
+        run: |
+          echo "${{ secrets.AWS_CLIENT_VPN_CONFIG }}" > config.ovpn  
+
+      - name: Connect VPN
+        run: sudo openvpn --config ".github/vpn/config.ovpn"
 
       - name: Docker Build
         run: docker build . -t payment-gateway:${{ github.run_id }}
