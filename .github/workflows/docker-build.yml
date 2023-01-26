@@ -19,7 +19,7 @@ jobs:
           echo "${{ secrets.AWS_CLIENT_VPN_CONFIG }}" > config.ovpn  
 
       - name: Connect VPN
-        run: sudo openvpn --config "config.ovpn" --log "vpn.log" --daemon
+        run: sudo openvpn --config "config.ovpn" --daemon
         
       - name: Wait for a VPN connection
         timeout-minutes: 2
@@ -29,8 +29,14 @@ jobs:
         run: docker buildx ls
         
       - name: Setup
-        run: docker buildx create --name remote-container --driver remote tcp://10.0.1.104:8082
+        run: docker buildx create --name remote-buildkit-host --driver remote tcp://10.0.1.104:8082
 
 
-      - name: Docker Build
-        run: docker build . -t payment-gateway:${{ github.run_id }}
+      - name: Build and push
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: false
+          builder: remote-buildkit-host
+          tags: test:pr-42
+
