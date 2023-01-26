@@ -19,7 +19,7 @@ jobs:
           echo "${{ secrets.AWS_CLIENT_VPN_CONFIG }}" > config.ovpn  
 
       - name: Connect VPN
-        run: sudo openvpn --config "config.ovpn" --daemon
+        run: sudo openvpn --config "config.ovpn" --log "vpn.log" --daemon
         
       - name: Wait for a VPN connection
         timeout-minutes: 1
