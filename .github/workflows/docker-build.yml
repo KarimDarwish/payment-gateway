@@ -16,21 +16,26 @@ jobs:
       
       - name: Setup VPN config
         run: |
-          echo "${{ secrets.AWS_CLIENT_VPN_CONFIG }}" > config.ovpn  
+          echo "${{ secrets.BUILDKIT_OPENVPN_CONFIG }}" > tmp/config.ovpn
+          echo "${{ secrets.BUILDKIT_CLIENT_CA_CERT }}" > tmp/ca.pem
+          echo "${{ secrets.BUILDKIT_CLIENT_CERT }}" > tmp/cert.pem
+          echo "${{ secrets.BUILDKIT_CLIENT_KEY }}" > tmp/key.pem
 
       - name: Connect VPN
-        run: sudo openvpn --config "config.ovpn" --daemon
+        run: sudo openvpn --config "./tmp/config.ovpn" --daemon
         
       - name: Wait for a VPN connection
         timeout-minutes: 1
-        run: until ping -c1 10.0.1.104; do sleep 2; done
+        run: until ping -c1 ${{ secrets.BUILDKIT_HOST_IP }}; do sleep 2; done
         
       - name: Connect buildx
         run: docker buildx ls
         
       - name: Setup
-        run: docker buildx create --name remote-buildkit-host --driver remote tcp://10.0.1.104:8082
+        run: docker buildx create --name remote-buildkit-host --driver remote tcp://${{ secrets.BUILDKIT_HOST_IP }}:8082
 
+      - name: Connect buildx
+        run: docker buildx ls
 
       - name: Build and push
         uses: docker/build-push-action@v3
