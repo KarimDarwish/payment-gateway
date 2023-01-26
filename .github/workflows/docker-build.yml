@@ -33,7 +33,7 @@ jobs:
         run: docker buildx ls
         
       - name: Setup
-        run: docker buildx create --name remote-buildkit-host --driver remote tcp://${{ secrets.BUILDKIT_HOST_IP }}:8082
+        run: docker buildx create --name remote-buildkit-host --driver-opt cacert=${PWD}/tmp/ca.pem,cert=${PWD}/tmp/cert.pem,key=${PWD}/tmp/key.pem,servername=127.0.0.1 --driver remote tcp://${{ secrets.BUILDKIT_HOST_IP }}:8082
 
       - name: Connect buildx
         run: docker buildx ls
