@@ -22,7 +22,7 @@ jobs:
         run: sudo openvpn --config "config.ovpn" --daemon
         
       - name: Wait for a VPN connection
-        timeout-minutes: 2
+        timeout-minutes: 1
         run: until ping -c1 10.0.1.104; do sleep 2; done
         
       - name: Connect buildx
@@ -39,4 +39,9 @@ jobs:
           push: false
           builder: remote-buildkit-host
           tags: test:pr-42
+
+      - name: Kill VPN connection
+        if: always()
+        run: |
+          sudo killall openvpn    
 
