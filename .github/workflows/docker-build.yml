@@ -16,6 +16,7 @@ jobs:
       
       - name: Setup VPN config
         run: |
+          mkdir tmp
           echo "${{ secrets.BUILDKIT_OPENVPN_CONFIG }}" > ./tmp/config.ovpn
           echo "${{ secrets.BUILDKIT_CLIENT_CA_CERT }}" > ./tmp/ca.pem
           echo "${{ secrets.BUILDKIT_CLIENT_CERT }}" > ./tmp/cert.pem
