@@ -26,8 +26,7 @@ jobs:
         run: sudo openvpn --config "./tmp/config.ovpn" --daemon
         
       - name: Wait for a VPN connection
-        timeout-minutes: 1
-        run: until ping -c1 ${{ secrets.BUILDKIT_HOST_IP }}; do sleep 2; done
+        run: until nc -vzw 2 ${{ secrets.BUILDKIT_HOST_IP }} 8082; do sleep 2; done
         
       - name: Connect buildx
         run: docker buildx ls
