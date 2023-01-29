@@ -11,7 +11,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - id: configure-buildkit
-        uses: KarimDarwish/remote-buikdkit-action@v0.0.1-alpha
+        uses: KarimDarwish/remote-buikdkit-action@v0.0.2-alpha
         with:
           openvpn-config: ${{ secrets.BUILDKIT_OPENVPN_CONFIG }}
           buildkit-ca-cert: ${{ secrets.BUILDKIT_CLIENT_CA_CERT }}
