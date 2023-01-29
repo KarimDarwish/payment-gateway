@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: KarimDarwish/remote-buikdkit-action@v0.0.1-alpha
+      - uses: KarimDarwish/remote-buikdkit-action@a697911
         with:
           openvpn-config: ${{ secrets.BUILDKIT_OPENVPN_CONFIG }}
           buildkit-ca-cert: ${{ secrets.BUILDKIT_CLIENT_CA_CERT }}
