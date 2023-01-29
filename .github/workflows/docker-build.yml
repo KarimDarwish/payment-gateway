@@ -26,7 +26,7 @@ jobs:
         run: sudo openvpn --config "./tmp/config.ovpn" --daemon
 
       - name: Wait for a VPN connection
-        run: sleep 10s
+        run: sleep 5s
 
       - name: Setup
         run: docker buildx create --name remote-buildkit-host --driver-opt cacert=${PWD}/tmp/ca.pem,cert=${PWD}/tmp/cert.pem,key=${PWD}/tmp/key.pem,servername=127.0.0.1 --driver remote tcp://${{ secrets.BUILDKIT_HOST_IP }}:8082
