@@ -24,6 +24,7 @@ builder.Services.AddTransient<IRandomNumberGenerator, RandomNumberGenerator>();
 builder.Services.AddTransient<IPaymentService, PaymentService>();
 builder.Services.AddMediatR(typeof(Program).GetTypeInfo().Assembly);
 
+
 var app = builder.Build();
 
 app.UseSerilogRequestLogging();
